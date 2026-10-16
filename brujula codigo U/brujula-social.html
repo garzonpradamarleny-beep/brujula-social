@@ -1,0 +1,1289 @@
+<meta charset="utf-8">
+<title>Brújula Social</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Gelasio:ital,wght@0,600;0,700;1,500&family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: una columna central de 640px; portada crema con el búho sobre una luna-brújula, luego tarjetas blancas sobre fondo cálido (sistema Código U). */
+:root{
+  --bg:#f7f5ef; --cream:#f4ead3; --surface:#ffffff; --ink:#161618; --muted:#6b6e76; --line:#e8e3d7;
+  --gold:#c9962c; --gold-ink:#8f671d; --gold-soft:#f5ecd8; --gold-glow:rgba(201,150,44,.28);
+  --btn:#161618; --btn-ink:#f4ead3;
+  --good:#3d7a55; --good-bg:#e4f0e7; --bad:#b0464b; --bad-bg:#f8e4e4;
+  --t-pol:#9271b9; --t-eco:#5b86b5; --t-cul:#b7718f; --t-amb:#5f9272;
+  --moon-a:#fffaf0; --moon-b:#f4e8cf; --moon-c:#e2cfa6; --moon-d:#c9ad74;
+  --owl:#121314; --owl-gold:#e0ac30;
+  --shadow:0 1px 2px rgba(22,22,24,.05),0 8px 24px rgba(22,22,24,.06);
+  --f-display:"Gelasio",Georgia,"Times New Roman",serif;
+  --f-body:"DM Sans","Segoe UI",system-ui,sans-serif;
+  --f-ui:"Manrope","DM Sans","Segoe UI",system-ui,sans-serif;
+  --radius:.75rem;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121314; --cream:#17171a; --surface:#1d1e21; --ink:#f2ead8; --muted:#a6a39b; --line:#2d2d31;
+  --gold:#e0ac30; --gold-ink:#e7bd65; --gold-soft:#2a2416; --gold-glow:rgba(231,189,101,.25);
+  --btn:#f2ead8; --btn-ink:#161618;
+  --good:#86c9a0; --good-bg:#1b2b21; --bad:#ec8f93; --bad-bg:#35201f;
+  --t-pol:#b79ad9; --t-eco:#8fb2da; --t-cul:#dc9bb8; --t-amb:#8fc1a0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121314; --cream:#17171a; --surface:#1d1e21; --ink:#f2ead8; --muted:#a6a39b; --line:#2d2d31;
+  --gold:#e0ac30; --gold-ink:#e7bd65; --gold-soft:#2a2416; --gold-glow:rgba(231,189,101,.25);
+  --btn:#f2ead8; --btn-ink:#161618;
+  --good:#86c9a0; --good-bg:#1b2b21; --bad:#ec8f93; --bad-bg:#35201f;
+  --t-pol:#b79ad9; --t-eco:#8fb2da; --t-cul:#dc9bb8; --t-amb:#8fc1a0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+body.cover{background:var(--cream)}
+#app{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
+
+/* ---------- Marca ---------- */
+.wordmark{font:700 clamp(30px,7vw,40px)/1.05 var(--f-display);letter-spacing:.14em;text-transform:uppercase;text-align:center}
+.wordmark span{color:var(--gold)}
+.lema{font:italic 500 16px/1.4 var(--f-display);text-align:center;color:var(--ink);opacity:.86}
+.eyebrow{font:700 11px/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+.mute{color:var(--muted);font-size:14px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font:700 15px/1 var(--f-display);letter-spacing:.12em;text-transform:uppercase}
+.brand span{color:var(--gold)}
+.pill{font:700 13px/1 var(--f-ui);padding:8px 12px;border-radius:999px;background:var(--gold-soft);color:var(--gold-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---------- Búho (SVG de Código U) ---------- */
+.owl svg{display:block;width:100%;height:auto;overflow:visible}
+.owl-ink{fill:var(--owl)}
+.owl-gold-fill{fill:var(--owl-gold)}
+.owl-gold-shine{mix-blend-mode:screen}
+.moon{border-radius:50%;background:radial-gradient(circle at 42% 38%,var(--moon-a) 0%,var(--moon-b) 48%,var(--moon-c) 72%,var(--moon-d) 100%);display:grid;place-items:center}
+.ava{width:44px;height:44px;flex:none;box-shadow:0 0 0 3px var(--surface)}
+.ava .owl{width:24px;margin-top:4px}
+.mini{width:30px;height:30px}
+.mini .owl{width:16px;margin-top:3px}
+
+/* Escena de la portada: luna, anillo-brújula y búho */
+.scene{position:relative;width:min(260px,70vw);aspect-ratio:1;margin:8px auto 0}
+.scene .moon{position:absolute;inset:14%;box-shadow:0 0 50px 6px var(--gold-glow)}
+.ring{position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--gold-glow)}
+.ring b{position:absolute;font:800 11px/1 var(--f-ui);color:var(--gold-ink);letter-spacing:.06em}
+.ring b:nth-child(1){top:-6px;left:50%;translate:-50%}
+.ring b:nth-child(2){bottom:-6px;left:50%;translate:-50%}
+.ring b:nth-child(3){right:-4px;top:50%;translate:0 -50%}
+.ring b:nth-child(4){left:-6px;top:50%;translate:0 -50%}
+.ring i{position:absolute;top:9%;left:13%;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px 4px var(--gold-glow)}
+.scene .owl{position:absolute;left:50%;bottom:6%;width:46%;translate:-50%;filter:drop-shadow(0 14px 14px rgba(0,0,0,.25))}
+
+/* ---------- Splash ---------- */
+.splash{min-height:calc(100dvh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;cursor:pointer;text-align:center}
+.splash .scene{width:min(320px,78vw)}
+.skip{font:600 10px/1 var(--f-ui);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.skip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+/* ---------- Tarjetas y formularios ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h3{font:700 17px/1.3 var(--f-ui)}
+label,.lbl{font:700 13px/1.2 var(--f-ui);color:var(--ink)}
+input[type=text]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 16px var(--f-body)}
+input[type=text]:focus-visible{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+.err{color:var(--bad);font-size:14px;font-weight:600}
+.field{display:flex;flex-direction:column;gap:8px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 16px;font:600 14px/1 var(--f-ui);cursor:pointer;transition:background .2s,border-color .2s,transform .15s}
+.chip:hover:not(:disabled){border-color:var(--ink)}
+.chip:active:not(:disabled){transform:scale(.96)}
+.chip.on{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.chip.good{background:var(--good-bg);color:var(--good);border-color:var(--good)}
+.chip.bad{background:var(--bad-bg);color:var(--bad);border-color:var(--bad);text-decoration:line-through}
+.chip.miss{border-style:dashed;border-color:var(--good);color:var(--good)}
+.chip:disabled{cursor:default}
+.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px}
+
+.btn{position:relative;overflow:hidden;align-self:stretch;border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);padding:15px 22px;font:700 15px/1 var(--f-ui);letter-spacing:.02em;cursor:pointer;transition:transform .15s,opacity .2s}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.shine::after{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-150%)}
+.link{background:none;border:0;color:var(--muted);font:600 13px var(--f-ui);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px}
+
+/* Burbuja del búho */
+/* Nota de explicación dentro de la página (el búho habla desde la esquina) */
+.say p{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--radius);padding:13px 16px;font-size:15px;box-shadow:var(--shadow);min-width:0}
+.say.ok p{background:var(--good-bg);border-color:transparent;border-left-color:var(--good)}
+.say.no p{background:var(--gold-soft);border-color:transparent;border-left-color:var(--gold)}
+
+/* Aguja de brújula en la portada de registro */
+.needle{position:absolute;left:50%;top:50%;width:54%;translate:-50% -50%;overflow:visible;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
+
+/* ---------- Búho ayudante ---------- */
+#helper{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30}
+.h-owl{position:relative;display:grid;place-items:center;width:72px;height:72px;border:0;padding:0;cursor:pointer;box-shadow:0 0 0 4px var(--bg),0 10px 26px rgba(0,0,0,.22),0 0 30px 4px var(--gold-glow);transition:transform .2s}
+.h-owl:hover{transform:scale(1.06)}
+.h-owl .owl{width:40px;margin-top:6px}
+.h-owl.ghost{opacity:0}
+.h-bubble{position:absolute;left:4px;bottom:88px;width:max-content;max-width:min(330px,calc(100vw - 40px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px 18px 18px 4px;padding:12px 16px;font-size:15px;line-height:1.45;box-shadow:var(--shadow);cursor:pointer;transform-origin:10% 100%}
+.h-bubble::after{content:"";position:absolute;left:22px;bottom:-7px;width:12px;height:12px;background:inherit;border-right:1px solid var(--line);border-bottom:1px solid var(--line);rotate:45deg}
+.h-bubble.ok{background:var(--good-bg);border-color:transparent}
+.h-bubble.no{background:var(--gold-soft);border-color:transparent}
+.h-bubble b{font-family:var(--f-ui)}
+#helper[data-mood="worried"] .owl-head{animation:none;transform:rotate(-13deg) translateY(6px)}
+.owl-head{transition:transform .4s cubic-bezier(.3,1.4,.5,1)}
+.flyer{position:fixed;left:0;top:0;z-index:40;pointer-events:none;transform-origin:0 0;filter:drop-shadow(0 0 1.4px var(--moon-b)) drop-shadow(0 0 7px var(--gold-glow)) drop-shadow(0 14px 14px rgba(0,0,0,.25))}
+body.has-helper{padding-bottom:128px}
+/* Panel de ayuda del búho */
+.h-panel{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(102px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100vw - 32px));max-height:min(64vh,580px);display:flex;flex-direction:column;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;transform-origin:6% 100%}
+.hp-head{display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:var(--gold-soft)}
+.hp-head .moon{width:38px;height:38px;flex:none}
+.hp-head .moon .owl{width:21px;margin-top:3px}
+.hp-head div{flex:1;min-width:0}
+.hp-head small{display:block;font:700 10px/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:4px}
+.hp-head h4{margin:0;font:700 16px/1.25 var(--f-display)}
+.hp-x{flex:none;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--ink);font:500 22px/1 var(--f-ui);cursor:pointer}
+.hp-x:hover{background:var(--surface)}
+.hp-body{padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.hp-item{display:flex;gap:11px;font-size:14.5px;line-height:1.5}
+.hp-item i{flex:none;width:24px;height:24px;margin-top:1px;border-radius:50%;display:grid;place-items:center;font:800 12px/1 var(--f-ui);font-style:normal}
+.hp-item.bad i{background:var(--bad-bg);color:var(--bad)}
+.hp-item.miss i{border:1.5px dashed var(--good);color:var(--good)}
+.hp-item.good i{background:var(--good-bg);color:var(--good)}
+.hp-item b{font-family:var(--f-ui)}
+.hp-foot{padding:12px 16px 16px;border-top:1px solid var(--line)}
+.hp-foot .btn{width:100%;padding:13px}
+@media (max-width:520px){.h-panel{bottom:calc(86px + env(safe-area-inset-bottom,0px))}}
+/* IA del búho: botones dorados, respuestas en vivo, pistas y chat */
+.btn.ai{background:linear-gradient(100deg,var(--gold) 0%,#f1cf7a 50%,var(--gold) 100%);background-size:220% 100%;color:#161618}
+.btn.ai.sm{padding:12px 18px;font-size:14px}
+.btn.ai:disabled{opacity:.45}
+.hp-foot{display:flex;flex-direction:column;gap:8px}
+.hp-tabs{display:flex;gap:4px;padding:6px 12px 0;border-bottom:1px solid var(--line)}
+.hp-tabs button{flex:1;border:0;background:none;padding:10px 6px;font:700 13px/1.2 var(--f-ui);color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;transition:color .2s,border-color .2s}
+.hp-tabs button.on{color:var(--ink);border-bottom-color:var(--gold)}
+.hp-ai{background:var(--gold-soft);border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.55}
+.hp-ai::before{content:"✦ Respuesta con IA";display:block;font:700 10px/1 var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:8px}
+.hp-ai p,.msg p{margin:0}
+.hp-ai p+p,.msg p+p{margin-top:8px}
+.hint-list{display:flex;flex-direction:column;gap:10px}
+.dots{display:inline-flex;gap:4px;margin-right:6px;vertical-align:middle}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.caret{display:inline-block;width:7px;height:15px;margin-left:3px;vertical-align:-2px;border-radius:2px;background:var(--gold)}
+.ai-err{color:var(--bad);font-weight:600;font-size:14px}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:180px}
+.msg{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.5}
+.msg.me{align-self:flex-end;background:var(--btn);color:var(--btn-ink);border-bottom-right-radius:4px}
+.msg.owl{align-self:flex-start;background:var(--gold-soft);border-bottom-left-radius:4px}
+.sugs{display:flex;flex-wrap:wrap;gap:6px}
+.sug{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;font:600 12.5px/1.2 var(--f-ui);cursor:pointer;text-align:left}
+.sug:hover{border-color:var(--gold)}
+.ask{display:flex;gap:8px}
+.ask input{flex:1;min-width:0;padding:12px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:500 15px var(--f-body)}
+.ask input:focus-visible{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-glow)}
+.hp-foot .ask .btn{width:auto;padding:12px 18px}
+
+/* ---------- Fase 5: detalles de movimiento y pulido ---------- */
+#app{position:relative;z-index:1}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particles i{position:absolute;width:var(--s,5px);height:var(--s,5px);border-radius:50%;background:var(--gold);opacity:.18;box-shadow:0 0 10px 2px var(--gold-glow)}
+.wordmark span{background:linear-gradient(90deg,var(--gold) 0%,#f1cf7a 45%,var(--gold) 90%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{transition:translate .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+@media (hover:hover){.card:hover{translate:0 -2px;box-shadow:0 2px 4px rgba(22,22,24,.05),0 16px 36px rgba(22,22,24,.10),0 0 0 1px var(--gold-glow)}}
+.btn,.sug,.hp-tabs button{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:currentColor;opacity:.25;pointer-events:none;transform:scale(0)}
+.steps i{position:relative;overflow:hidden}
+.pill{display:inline-block}
+.trophy-row{display:flex;flex-direction:column;align-items:center;gap:10px}
+.trophy{width:76px;height:76px;filter:drop-shadow(0 8px 14px var(--gold-glow))}
+.stars{display:flex;gap:8px}
+.stars svg{width:30px;height:30px}
+.stars path{fill:var(--line)}
+.stars .on path{fill:var(--gold)}
+/* Modos, práctica ilimitada y puntaje */
+.h-display{font:700 clamp(24px,5.4vw,30px)/1.2 var(--f-display)}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.modes{grid-template-columns:1fr}}
+.mode-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;font:inherit;position:relative;overflow:hidden;transition:translate .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .3s}
+.mode-card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,var(--gold-glow) 50%,transparent 70%);background-size:250% 100%;background-position:120% 0;opacity:0;transition:opacity .3s;pointer-events:none}
+@media (hover:hover){.mode-card:hover{translate:0 -4px;border-color:var(--gold);box-shadow:0 18px 40px rgba(22,22,24,.14),0 0 0 1px var(--gold-glow)}.mode-card:hover::after{opacity:1}}
+.mode-ico{display:grid;place-items:center;width:58px;height:58px;border-radius:16px;background:var(--gold-soft);color:var(--ink)}
+.mode-ico svg{width:38px;height:38px;overflow:visible}
+.mode-t{font:700 21px/1.2 var(--f-display)}
+.mode-d{font-size:14.5px;line-height:1.5;color:var(--muted)}
+.mode-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.mode-tags i{font:700 11.5px/1 var(--f-ui);font-style:normal;padding:6px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.pill-btn{border:0;cursor:pointer;transition:background .2s}
+.pill-btn:hover{background:var(--gold);color:#161618}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:440px){.row2{grid-template-columns:1fr}}
+.q-stem{font:600 16.5px/1.5 var(--f-body)}
+.src blockquote .cite{display:block;margin-top:6px;font:600 12px/1.3 var(--f-ui);font-style:normal;color:var(--muted)}
+.gauge-wrap{position:relative;width:min(220px,62vw);aspect-ratio:1;margin:0 auto}
+.gauge{width:100%;height:100%;rotate:-90deg}
+.gauge circle{fill:none;stroke-width:10}
+.g-track{stroke:var(--line)}
+.g-fill{stroke:var(--gold);stroke-linecap:round;filter:drop-shadow(0 0 6px var(--gold-glow))}
+.g-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-num b{font:700 clamp(54px,15vw,72px)/1 var(--f-display);font-variant-numeric:tabular-nums}
+.g-num small{font:700 12px/1 var(--f-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.level{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:14px 18px;border-radius:16px;margin:0 auto;max-width:440px}
+.level b{font:800 13px/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+.level span{font-size:14.5px;line-height:1.45}
+.lv1{background:var(--bad-bg)}.lv1 b{background:var(--bad);color:var(--surface)}
+.lv2{background:var(--gold-soft)}.lv2 b{background:var(--gold);color:#161618}
+.lv3{background:var(--gold-soft)}.lv3 b{background:var(--t-eco);color:#fff}
+.lv4{background:var(--good-bg)}.lv4 b{background:var(--good);color:var(--surface)}
+.tnum{font-variant-numeric:tabular-nums}
+.cbar{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font:600 14px/1.3 var(--f-ui);font-variant-numeric:tabular-nums}
+.cbar div{grid-column:1/-1;height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.cbar div i{display:block;height:100%;border-radius:inherit;background:var(--gold);transform-origin:left}
+.badge-ai{align-self:flex-start;font:700 11px/1 var(--f-ui);letter-spacing:.06em;padding:6px 10px;border-radius:999px;background:linear-gradient(100deg,var(--gold) 0%,#f1cf7a 50%,var(--gold) 100%);background-size:220% 100%;color:#161618}
+.loading-q{gap:14px}
+.skel{height:13px;border-radius:7px;background:linear-gradient(90deg,var(--line) 0%,var(--gold-soft) 45%,var(--line) 90%);background-size:250% 100%}
+.skel.w40{width:40%}.skel.w60{width:60%;height:20px}.skel.w80{width:80%}
+.skel.opt-s{height:46px;border-radius:12px}
+#app.leave{opacity:0;transform:translateY(-8px);transition:opacity .18s ease-in,transform .18s ease-in}
+tbody tr{--i:0}
+@media (max-width:520px){.h-owl{width:60px;height:60px}.h-owl .owl{width:33px;margin-top:5px}.h-bubble{bottom:74px;font-size:14px}}
+
+/* Guía */
+.guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.guide .card{padding:16px;gap:6px;font-size:14px}
+.guide .wide{grid-column:1/-1}
+.guide b{font-family:var(--f-ui)}
+.dims{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px}
+.dims div{display:flex;gap:8px;align-items:baseline}
+.dims i{flex:none;width:9px;height:9px;border-radius:50%;translate:0 1px}
+@media (max-width:520px){.guide,.dims{grid-template-columns:1fr}}
+
+/* Progreso */
+.steps{display:flex;gap:8px}
+.steps i{flex:1;height:6px;border-radius:999px;background:var(--line)}
+.steps i.on{background:var(--ink)}
+.steps i.cur{background:var(--gold)}
+.meta{display:flex;justify-content:space-between;gap:10px;font:600 13px/1 var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* Fuente */
+.src{gap:14px}
+.src h2{font:700 clamp(21px,4.6vw,25px)/1.25 var(--f-display)}
+.src p{font-size:16px;max-width:62ch}
+.src blockquote{margin:0;padding:4px 0 4px 16px;border-left:3px solid var(--gold);font:italic 500 16px/1.55 var(--f-display)}
+.src .cite{font-size:12px;color:var(--muted)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font:500 14px/1.3 var(--f-ui);font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td.n,th.n{text-align:right}
+
+.q{font-weight:500}
+.opt{display:flex;gap:12px;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 14px;cursor:pointer;font:400 15px/1.45 var(--f-body);transition:border-color .2s,background .2s}
+.opt b{font:800 14px/1.45 var(--f-ui);color:var(--gold-ink);flex:none}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt.good{background:var(--good-bg);border-color:var(--good)}
+.opt.good b{color:var(--good)}
+.opt.bad{background:var(--bad-bg);border-color:var(--bad)}
+.opt.bad b{color:var(--bad)}
+.opt:disabled{cursor:default}
+
+/* Resultados */
+.score{text-align:center;font:700 clamp(64px,18vw,96px)/1 var(--f-display);font-variant-numeric:tabular-nums}
+.score small{font-size:.32em;color:var(--muted);font-weight:600}
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:110px 1fr 44px;gap:12px;align-items:center;font:600 14px/1 var(--f-ui);font-variant-numeric:tabular-nums}
+.bar div{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.bar div i{display:block;height:100%;border-radius:inherit;background:var(--gold);transform-origin:left}
+.bar span:last-child{text-align:right}
+.center{text-align:center}
+footer{text-align:center;font:600 12px/1.6 var(--f-ui);color:var(--muted);letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:6px}
+
+/* Efectos */
+.burst{position:fixed;width:0;height:0;pointer-events:none;z-index:20}
+.burst i{position:absolute;left:-5px;top:-11px;width:10px;height:22px;border-radius:50%/75% 75% 25% 25%;background:var(--owl)}
+.burst i.gold{background:linear-gradient(#ffe7a6,#d9a22b)}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.confetti i{position:absolute;top:-20px;width:8px;height:14px;border-radius:2px}
+
+/* ---------- Movimiento (vocabulario de Código U) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .enter>*{animation:routeEnter .5s cubic-bezier(.2,.8,.2,1) both}
+  .enter>*:nth-child(2){animation-delay:.05s}.enter>*:nth-child(3){animation-delay:.1s}
+  .enter>*:nth-child(4){animation-delay:.15s}.enter>*:nth-child(5){animation-delay:.2s}
+  .enter>*:nth-child(n+6){animation-delay:.25s}
+  .guide .card{animation:revealUp .6s cubic-bezier(.2,.8,.2,1) both}
+  .guide .card:nth-child(2){animation-delay:.08s}.guide .card:nth-child(3){animation-delay:.16s}.guide .card:nth-child(4){animation-delay:.24s}
+  .btn.shine::after{animation:buttonShine 4.2s ease-in-out 1.2s infinite}
+  .ring{animation:owlSpin 40s linear infinite}
+  .ring b{animation:owlSpinBack 40s linear infinite}
+  .scene .moon{animation:owlMoonIn 1s cubic-bezier(.2,1.3,.4,1) both,owlMoonPulse 6s ease-in-out 1s infinite}
+  .owl-float{transform-box:view-box;transform-origin:50% 100%;animation:owlFloat 4.4s ease-in-out 3.6s infinite}
+  .owl-part{transform-box:fill-box;transform-origin:center;animation:partShow .5s ease-out .25s both,partIdle .55s ease-in-out .35s 2,owlAssemble .95s cubic-bezier(.2,1.25,.35,1) var(--d,0s) both}
+  .owl-horn-l{transform-box:fill-box;transform-origin:100% 100%;animation:owlTwitchL 5.6s ease-in-out 4.2s infinite}
+  .owl-horn-r{transform-box:fill-box;transform-origin:0% 100%;animation:owlTwitchR 5.6s ease-in-out 4.4s infinite}
+  .owl-wing-l{transform-box:fill-box;transform-origin:80% 5%;animation:owlBreathL 4.4s ease-in-out 3.6s infinite}
+  .owl-wing-r{transform-box:fill-box;transform-origin:25% 5%;animation:owlBreathR 4.4s ease-in-out 3.6s infinite}
+  .scene.kick .moon{animation:owlMoonKick .6s ease-out,owlMoonPulse 6s ease-in-out .6s infinite}
+  .scene.kick::after{content:"";position:absolute;inset:14%;border-radius:50%;border:2px solid var(--gold);animation:kickRing .9s ease-out forwards;pointer-events:none}
+  .splash .scene::before{content:"";position:absolute;inset:-20%;border-radius:50%;background:radial-gradient(circle,var(--gold-glow),transparent 60%);opacity:0;animation:owlFade 1.2s ease-out 3s both}
+  .still .owl-part,.still .owl-float,.still .owl-horn-l,.still .owl-horn-r,.still .owl-wing-l,.still .owl-wing-r{animation:none}
+  .splash .wordmark{animation:revealUp .8s cubic-bezier(.2,.8,.2,1) 3.3s both}
+  .splash .lema{animation:revealUp .8s cubic-bezier(.2,.8,.2,1) 3.55s both}
+  .splash .skip{animation:owlFade .6s ease-out 3.9s both,owlNudge 2.2s ease-in-out 4.5s infinite}
+  .skip::before{animation:owlPing 1.6s ease-out infinite}
+  .say.pop p{transform-origin:0 0;animation:revealUp .55s cubic-bezier(.2,.8,.2,1) both}
+  .needle{animation:needleSeek 7s ease-in-out infinite}
+  .idle .owl-part{animation:none}
+  .idle .owl-float,.idle .owl-wing-l,.idle .owl-wing-r{animation-delay:0s}
+  .idle .owl-horn-l,.idle .owl-horn-r{animation-delay:1.2s}
+  .idle .owl-head{transform-box:view-box;transform-origin:50% 46%;animation:osLook 9s ease-in-out 3s infinite}
+  .flying .owl-wing-l{animation:owlFlapL .34s ease-in-out infinite}
+  .flying .owl-wing-r{animation:owlFlapR .34s ease-in-out infinite}
+  .h-owl.land{animation:owlHop .75s cubic-bezier(.3,1.4,.5,1)}
+  #helper[data-mood="talk"] .h-owl{animation:mxBob .45s ease-in-out 4}
+  .h-bubble.pop{animation:bubbleIn .55s cubic-bezier(.3,1.5,.5,1) both}
+  .btn.ai:not(:disabled){animation:goldDrift 5s ease-in-out infinite}
+  .enter .mode-card{animation:revealUp .7s cubic-bezier(.2,.8,.2,1) both}
+  .enter .mode-card:nth-child(2){animation-delay:.12s}
+  .mode-card:hover::after{animation:mxShimmer 1.4s ease-out}
+  .mode-card:hover .ico-needle{transform-box:view-box;transform-origin:50% 50%;animation:needleSeek 2.4s ease-in-out}
+  .ico-inf{stroke-dasharray:120;animation:infDraw 3.2s ease-in-out infinite}
+  .enter .g-fill{animation:gaugeIn 1.4s cubic-bezier(.2,.8,.2,1) .2s both}
+  .enter .level{animation:emblemIn .6s cubic-bezier(.3,1.5,.5,1) .9s both}
+  .cbar div i{animation:growX 1s cubic-bezier(.2,.8,.2,1) .4s both}
+  .pill-btn{animation:none}
+  .skel{animation:mxShimmer 1.6s linear infinite}
+  .badge-ai{animation:goldDrift 5s ease-in-out infinite,revealUp .5s cubic-bezier(.2,.8,.2,1) both}
+  .particles i{animation:floatParticle var(--t,9s) ease-in-out var(--d,0s) infinite}
+  .wordmark span{animation:goldDrift 6s ease-in-out infinite}
+  .ripple{animation:mxRipple .6s ease-out forwards}
+  .enter>.src{animation:cardIn .75s cubic-bezier(.2,.8,.2,1) .08s both}
+  .chip.just{animation:mxPop .35s ease-out}
+  .steps i.cur::after{content:"";position:absolute;top:0;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:pathSweep 1.8s ease-in-out infinite}
+  .enter .steps i.on:last-of-type,.enter .steps i.on{animation:stepFill .5s ease-out both}
+  .pill.bump{animation:mxPop .5s ease-out}
+  .dims i{animation:legendPulse 2.4s ease-in-out infinite}
+  .dims div:nth-child(2) i{animation-delay:.3s}.dims div:nth-child(3) i{animation-delay:.6s}.dims div:nth-child(4) i{animation-delay:.9s}
+  .trophy{animation:trophySwing 3.2s ease-in-out 1.2s infinite;transform-origin:50% 90%}
+  .enter .trophy{animation:emblemIn .7s cubic-bezier(.3,1.5,.5,1) .2s both,trophySwing 3.2s ease-in-out 1.2s infinite}
+  .enter .stars svg{animation:starPop .55s cubic-bezier(.3,1.6,.5,1) both}
+  .enter .stars svg:nth-child(1){animation-delay:.7s}.enter .stars svg:nth-child(2){animation-delay:.9s}.enter .stars svg:nth-child(3){animation-delay:1.1s}
+  .stars .on path{animation:osGold 2.4s ease-in-out 1.6s infinite}
+  tbody tr{animation:revealUp .45s cubic-bezier(.2,.8,.2,1) calc(var(--i)*60ms + 150ms) both}
+  .sug{animation:revealUp .4s cubic-bezier(.2,.8,.2,1) both}
+  .sug:nth-child(2){animation-delay:.08s}.sug:nth-child(3){animation-delay:.16s}
+  .h-owl.thinking{animation:mxBob .6s ease-in-out infinite}
+  .dots i{animation:dotWave 1.2s ease-in-out infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+  .caret{animation:blinkSoft 1s steps(2) infinite}
+  .msg,.hp-ai{animation:revealUp .4s cubic-bezier(.2,.8,.2,1) both}
+  .hp-tabs button.on{animation:mxPop .35s ease-out}
+  .h-panel.pop{animation:dialogPop .5s cubic-bezier(.2,1.25,.4,1) both}
+  .h-panel.pop .hp-item{animation:revealUp .5s cubic-bezier(.2,.8,.2,1) calc(var(--i,0)*110ms + 250ms) both}
+  .h-panel.out{animation:panelOut .22s ease-in both}
+  .hp-item.bad i{animation:lockShake .5s ease-out calc(var(--i,0)*110ms + 600ms)}
+  .hp-item.good i{animation:mxPop .5s ease-out calc(var(--i,0)*110ms + 600ms)}
+  .h-owl::after{content:"";position:absolute;inset:0;border-radius:50%;animation:owlPing 2.4s ease-out 1s infinite;pointer-events:none}
+  .steps i.cur{animation:todayPulse 1.8s ease-out infinite}
+  .chip.good.fx{animation:mxPop .45s ease-out}
+  .chip.bad.fx{animation:lockShake .45s ease-out}
+  .opt.good.fx{animation:mxPop .45s ease-out}
+  .opt.bad.fx{animation:lockShake .45s ease-out}
+  .score{animation:countIn .7s ease-out both}
+  .bar div i{animation:growX 1s cubic-bezier(.2,.8,.2,1) .3s both}
+  .burst i{animation:owlFeather var(--t,1.2s) cubic-bezier(.12,.7,.3,1) forwards}
+  .confetti i{animation:confettiFall var(--t,3s) linear var(--d,0s) forwards}
+}
+@media (prefers-reduced-motion:reduce){.burst,.confetti{display:none}}
+/* Piezas desarmadas: desplazamientos en unidades del viewBox del búho (≈0,3 px de pantalla cada una) */
+.from-bl{--fx:-560px;--fy:180px;--fr:-48deg}.from-br{--fx:560px;--fy:120px;--fr:52deg}
+.from-l{--fx:-520px;--fy:-180px;--fr:-34deg}.from-r{--fx:520px;--fy:-160px;--fr:34deg}
+.from-top{--fx:0px;--fy:-420px;--fr:-18deg}.from-tl{--fx:-380px;--fy:-330px;--fr:-60deg}
+.from-tr{--fx:380px;--fy:-330px;--fr:60deg}.from-gold{--fx:420px;--fy:420px;--fr:140deg}
+.splash{overflow:hidden}
+.splash .scene .owl{filter:drop-shadow(0 0 1.4px var(--moon-b)) drop-shadow(0 0 7px var(--gold-glow)) drop-shadow(0 14px 14px rgba(0,0,0,.25))}
+.burst i.spark{width:8px;height:8px;left:-4px;top:-4px;border-radius:2px;background:#fff;box-shadow:0 0 12px 3px var(--gold)}
+
+@keyframes routeEnter{0%{opacity:0;transform:translateY(13px)}100%{opacity:1;transform:none}}
+@keyframes revealUp{0%{opacity:0;transform:translateY(23px)}100%{opacity:1;transform:none}}
+@keyframes countIn{0%{opacity:.2;transform:translateY(7px)}100%{opacity:1;transform:none}}
+@keyframes buttonShine{0%,70%{transform:translateX(-150%)}88%,100%{transform:translateX(260%)}}
+@keyframes softFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes owlArrive{0%{transform:translate(var(--fx,0),var(--fy,0)) rotate(var(--fr,0)) scale(.4);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes owlFlapL{0%,100%{transform:rotate(0)}25%{transform:rotate(34deg)}50%{transform:rotate(-6deg)}72%{transform:rotate(20deg)}}
+@keyframes owlFlapR{0%,100%{transform:rotate(0)}25%{transform:rotate(-34deg)}50%{transform:rotate(6deg)}72%{transform:rotate(-20deg)}}
+@keyframes osLook{0%,20%,100%{transform:rotate(0)}30%,45%{transform:rotate(-10deg)}60%,75%{transform:rotate(9deg)}85%{transform:rotate(0)}}
+@keyframes mxBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes needleSeek{0%,100%{rotate:0deg}12%{rotate:-28deg}26%{rotate:16deg}38%{rotate:-7deg}50%{rotate:2deg}60%{rotate:0deg}}
+@keyframes mxShimmer{0%{background-position:120% 0}100%{background-position:-50% 0}}
+@keyframes infDraw{0%{stroke-dashoffset:120}50%{stroke-dashoffset:0}100%{stroke-dashoffset:-120}}
+@keyframes gaugeIn{from{stroke-dashoffset:var(--c)}}
+@keyframes floatParticle{0%,100%{transform:translate(0,10px);opacity:.06}50%{transform:translate(12px,-22px);opacity:.55}}
+@keyframes mxRipple{100%{transform:scale(1);opacity:0}}
+@keyframes cardIn{0%{opacity:0;transform:perspective(900px) rotateX(-14deg) translateY(26px) scale(.97)}100%{opacity:1;transform:none}}
+@keyframes pathSweep{0%{left:-40%}100%{left:100%}}
+@keyframes stepFill{0%{transform:scaleX(.2);transform-origin:left}100%{transform:none}}
+@keyframes legendPulse{0%,100%{scale:1}50%{scale:1.5}}
+@keyframes emblemIn{0%{transform:scale(0) rotate(-40deg)}100%{transform:none}}
+@keyframes trophySwing{0%,100%{rotate:0deg;translate:0 0}25%{rotate:-6deg;translate:0 -3px}75%{rotate:6deg;translate:0 -3px}}
+@keyframes starPop{0%{transform:scale(0) rotate(-90deg)}100%{transform:none}}
+@keyframes osGold{0%,100%{fill:var(--gold)}50%{fill:#f6d382}}
+@keyframes goldDrift{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
+@keyframes dotWave{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes blinkSoft{50%{opacity:.25}}
+@keyframes dialogPop{0%{opacity:0;transform:perspective(900px) scale(.86) rotateX(14deg) translateY(20px)}100%{opacity:1;transform:none}}
+@keyframes panelOut{100%{opacity:0;transform:scale(.92) translateY(14px)}}
+@keyframes partShow{0%{opacity:0}100%{opacity:1}}
+@keyframes partIdle{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@keyframes owlAssemble{0%{transform:translate(var(--fx,0),var(--fy,0)) rotate(var(--fr,0)) scale(.82)}100%{transform:none}}
+@keyframes owlMoonKick{0%,100%{transform:none}30%{transform:scale(1.08)}}
+@keyframes kickRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+@keyframes owlFloat{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-10px) rotate(1.2deg)}}
+@keyframes owlTwitchL{0%,84%,100%{transform:rotate(0)}88%{transform:rotate(-12deg)}92%{transform:rotate(5deg)}96%{transform:rotate(-3deg)}}
+@keyframes owlTwitchR{0%,84%,100%{transform:rotate(0)}88%{transform:rotate(12deg)}92%{transform:rotate(-5deg)}96%{transform:rotate(3deg)}}
+@keyframes owlBreathL{0%,100%{transform:rotate(0)}50%{transform:rotate(3deg)}}
+@keyframes owlBreathR{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg)}}
+@keyframes owlHop{0%{transform:none}18%{transform:translateY(5px) scale(1.06,.9)}45%{transform:translateY(-22px) scale(.95,1.07)}75%{transform:translateY(0) scale(1.05,.95)}100%{transform:none}}
+@keyframes owlFeather{0%{transform:translate(0,0) rotate(0) scale(.3);opacity:0}10%{opacity:1}100%{transform:translate(var(--tx),var(--ty)) rotate(var(--tr)) scale(1);opacity:0}}
+@keyframes owlMoonIn{0%{transform:scale(0);opacity:0}100%{transform:none;opacity:1}}
+@keyframes owlMoonPulse{0%,100%{box-shadow:0 0 50px 6px var(--gold-glow)}50%{box-shadow:0 0 70px 14px var(--gold-glow)}}
+@keyframes owlSpin{100%{rotate:360deg}}
+@keyframes owlSpinBack{100%{rotate:-360deg}}
+@keyframes owlFade{0%{opacity:0}100%{opacity:1}}
+@keyframes owlNudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes owlPing{0%{box-shadow:0 0 0 0 var(--gold-glow)}100%{box-shadow:0 0 0 10px transparent}}
+@keyframes bubbleIn{0%{transform:scale(.6) rotate(-4deg);opacity:0}60%{transform:scale(1.03) rotate(1deg);opacity:1}100%{transform:none}}
+@keyframes todayPulse{0%{box-shadow:0 0 0 0 var(--gold-glow)}100%{box-shadow:0 0 0 7px transparent}}
+@keyframes mxPop{0%{transform:scale(1)}40%{transform:scale(1.1) rotate(-2deg)}100%{transform:scale(1)}}
+@keyframes lockShake{0%,100%{translate:0}20%{translate:-7px}40%{translate:6px}60%{translate:-4px}80%{translate:2px}}
+@keyframes growX{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(540deg);opacity:0}}
+</style>
+
+<main id="app" aria-live="polite"></main>
+<aside id="helper" hidden></aside>
+
+<script>
+/* ---------- Búho de Código U ---------- */
+let owlN=0;
+function OWL(still,idle){const g="sh"+(++owlN);return `<div class="owl${still?" still":""}${idle?" idle":""}" aria-hidden="true"><svg viewBox="300 30 480 690"><defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>${still?"":`<animateTransform attributeName="gradientTransform" type="translate" values="-1 -1; 1 1; 1 1" keyTimes="0; .5; 1" dur="3.4s" begin="${idle?"1s":"3.6s"}" repeatCount="indefinite"/>`}</linearGradient></defs><g class="owl-float"><g class="owl-wing-l"><g class="owl-part from-bl" style="--d:1.4s"><path class="owl-ink" d="M379.0,331.0C376.5,336.7 369.0,354.0 366.0,365.0C363.0,376.0 361.5,384.3 361.0,397.0C360.5,409.7 361.8,429.2 363.0,441.0C364.2,452.8 365.8,459.2 368.0,468.0C370.2,476.8 371.0,482.3 376.0,494.0C381.0,505.7 389.3,523.8 398.0,538.0C406.7,552.2 417.5,566.7 428.0,579.0C438.5,591.3 451.8,603.5 461.0,612.0C470.2,620.5 478.5,626.7 483.0,630.0C487.5,633.3 486.7,642.0 488.0,632.0C489.3,622.0 490.7,586.8 491.0,570.0C491.3,553.2 490.7,541.2 490.0,531.0C489.3,520.8 488.7,517.2 487.0,509.0C485.3,500.8 482.5,489.8 480.0,482.0C477.5,474.2 475.3,469.0 472.0,462.0C468.7,455.0 465.2,447.8 460.0,440.0C454.8,432.2 448.3,423.2 441.0,415.0C433.7,406.8 422.8,398.2 416.0,391.0C409.2,383.8 404.8,379.0 400.0,372.0C395.2,365.0 390.2,355.8 387.0,349.0C383.8,342.2 382.3,334.0 381.0,331.0C379.7,328.0 381.5,325.3 379.0,331.0Z"/></g></g><g class="owl-wing-r"><g class="owl-part from-br" style="--d:1.5s"><path class="owl-ink" d="M733.0,318.0C731.2,314.3 735.2,314.3 729.0,319.0C722.8,323.7 710.3,335.3 696.0,346.0C681.7,356.7 657.7,372.0 643.0,383.0C628.3,394.0 619.8,400.7 608.0,412.0C596.2,423.3 582.2,438.2 572.0,451.0C561.8,463.8 553.2,478.5 547.0,489.0C540.8,499.5 539.0,504.3 535.0,514.0C531.0,523.7 526.7,533.7 523.0,547.0C519.3,560.3 515.2,580.8 513.0,594.0C510.8,607.2 510.5,614.8 510.0,626.0C509.5,637.2 509.2,648.5 510.0,661.0C510.8,673.5 513.5,694.8 515.0,701.0C516.5,707.2 517.8,701.2 519.0,698.0C520.2,694.8 520.0,688.7 522.0,682.0C524.0,675.3 526.0,668.3 531.0,658.0C536.0,647.7 544.8,631.0 552.0,620.0C559.2,609.0 564.3,602.5 574.0,592.0C583.7,581.5 601.5,564.8 610.0,557.0C618.5,549.2 616.8,552.7 625.0,545.0C633.2,537.3 651.0,519.5 659.0,511.0C667.0,502.5 666.8,502.5 673.0,494.0C679.2,485.5 690.0,470.0 696.0,460.0C702.0,450.0 705.3,442.2 709.0,434.0C712.7,425.8 716.3,413.7 718.0,411.0C719.7,408.3 720.2,410.8 719.0,418.0C717.8,425.2 714.7,442.0 711.0,454.0C707.3,466.0 701.5,480.2 697.0,490.0C692.5,499.8 688.8,505.5 684.0,513.0C679.2,520.5 674.0,527.7 668.0,535.0C662.0,542.3 661.3,544.8 648.0,557.0C634.7,569.2 600.3,597.0 588.0,608.0C575.7,619.0 579.8,615.3 574.0,623.0C568.2,630.7 558.2,644.7 553.0,654.0C547.8,663.3 544.0,675.0 543.0,679.0C542.0,683.0 542.8,681.3 547.0,678.0C551.2,674.7 553.7,669.7 568.0,659.0C582.3,648.3 616.8,625.7 633.0,614.0C649.2,602.3 654.8,598.3 665.0,589.0C675.2,579.7 685.5,568.7 694.0,558.0C702.5,547.3 710.0,535.5 716.0,525.0C722.0,514.5 725.5,507.7 730.0,495.0C734.5,482.3 740.3,460.5 743.0,449.0C745.7,437.5 745.3,435.2 746.0,426.0C746.7,416.8 747.2,403.5 747.0,394.0C746.8,384.5 746.2,377.8 745.0,369.0C743.8,360.2 742.0,349.5 740.0,341.0C738.0,332.5 734.8,321.7 733.0,318.0Z"/></g><g class="owl-part from-gold" style="--d:2.45s"><path class="owl-gold-fill" d="M717.0,420.0C717.3,416.2 718.3,413.3 715.0,420.0C711.7,426.7 703.8,447.7 697.0,460.0C690.2,472.3 680.2,485.5 674.0,494.0C667.8,502.5 668.2,502.3 660.0,511.0C651.8,519.7 633.7,537.8 625.0,546.0C616.3,554.2 611.2,556.5 608.0,560.0C604.8,563.5 609.0,561.2 606.0,567.0C603.0,572.8 593.3,588.3 590.0,595.0C586.7,601.7 586.2,605.0 586.0,607.0C585.8,609.0 578.8,615.3 589.0,607.0C599.2,598.7 632.0,571.7 647.0,557.0C662.0,542.3 671.7,528.5 679.0,519.0C686.3,509.5 687.0,507.5 691.0,500.0C695.0,492.5 699.3,483.5 703.0,474.0C706.7,464.5 710.7,452.0 713.0,443.0C715.3,434.0 716.7,423.8 717.0,420.0Z"/><path class="owl-gold-shine" fill="url(#${g})" d="M717.0,420.0C717.3,416.2 718.3,413.3 715.0,420.0C711.7,426.7 703.8,447.7 697.0,460.0C690.2,472.3 680.2,485.5 674.0,494.0C667.8,502.5 668.2,502.3 660.0,511.0C651.8,519.7 633.7,537.8 625.0,546.0C616.3,554.2 611.2,556.5 608.0,560.0C604.8,563.5 609.0,561.2 606.0,567.0C603.0,572.8 593.3,588.3 590.0,595.0C586.7,601.7 586.2,605.0 586.0,607.0C585.8,609.0 578.8,615.3 589.0,607.0C599.2,598.7 632.0,571.7 647.0,557.0C662.0,542.3 671.7,528.5 679.0,519.0C686.3,509.5 687.0,507.5 691.0,500.0C695.0,492.5 699.3,483.5 703.0,474.0C706.7,464.5 710.7,452.0 713.0,443.0C715.3,434.0 716.7,423.8 717.0,420.0Z"/></g></g><g class="owl-head"><g class="owl-part from-l" style="--d:1.75s"><path class="owl-ink" d="M343.0,142.0C344.0,146.5 347.8,161.3 351.0,169.0C354.2,176.7 358.2,182.3 362.0,188.0C365.8,193.7 373.3,194.8 374.0,203.0C374.7,211.2 367.3,226.2 366.0,237.0C364.7,247.8 365.3,260.2 366.0,268.0C366.7,275.8 368.3,279.0 370.0,284.0C371.7,289.0 373.7,293.7 376.0,298.0C378.3,302.3 380.5,305.8 384.0,310.0C387.5,314.2 393.2,319.7 397.0,323.0C400.8,326.3 402.7,327.7 407.0,330.0C411.3,332.3 418.0,335.3 423.0,337.0C428.0,338.7 432.2,339.5 437.0,340.0C441.8,340.5 449.5,340.3 452.0,340.0C454.5,339.7 454.2,339.2 452.0,338.0C449.8,336.8 443.7,335.5 439.0,333.0C434.3,330.5 429.0,327.0 424.0,323.0C419.0,319.0 414.0,315.0 409.0,309.0C404.0,303.0 397.7,294.2 394.0,287.0C390.3,279.8 388.2,274.3 387.0,266.0C385.8,257.7 386.2,244.8 387.0,237.0C387.8,229.2 389.0,227.0 392.0,219.0C395.0,211.0 408.3,197.5 405.0,189.0C401.7,180.5 382.0,175.8 372.0,168.0C362.0,160.2 349.8,146.3 345.0,142.0C340.2,137.7 342.0,137.5 343.0,142.0Z"/></g><g class="owl-part from-r" style="--d:1.8s"><path class="owl-ink" d="M740.0,140.0C740.0,137.8 739.7,138.3 738.0,140.0C736.3,141.7 735.2,144.8 730.0,150.0C724.8,155.2 715.5,164.5 707.0,171.0C698.5,177.5 683.7,185.5 679.0,189.0C674.3,192.5 676.5,186.7 679.0,192.0C681.5,197.3 690.7,213.0 694.0,221.0C697.3,229.0 698.2,230.8 699.0,240.0C699.8,249.2 699.8,267.5 699.0,276.0C698.2,284.5 696.8,285.2 694.0,291.0C691.2,296.8 690.2,301.2 682.0,311.0C673.8,320.8 654.0,339.7 645.0,350.0C636.0,360.3 621.5,375.2 628.0,373.0C634.5,370.8 672.0,345.5 684.0,337.0C696.0,328.5 694.7,328.8 700.0,322.0C705.3,315.2 712.5,303.5 716.0,296.0C719.5,288.5 720.0,284.3 721.0,277.0C722.0,269.7 722.2,259.2 722.0,252.0C721.8,244.8 721.8,241.5 720.0,234.0C718.2,226.5 712.5,212.3 711.0,207.0C709.5,201.7 707.8,207.5 711.0,202.0C714.2,196.5 725.5,182.2 730.0,174.0C734.5,165.8 736.3,158.7 738.0,153.0C739.7,147.3 740.0,142.2 740.0,140.0Z"/></g><g class="owl-part from-top" style="--d:1.9s"><path class="owl-ink" d="M450.0,123.0C445.5,126.2 448.3,124.2 451.0,126.0C453.7,127.8 460.5,130.5 466.0,134.0C471.5,137.5 476.0,140.0 484.0,147.0C492.0,154.0 504.3,164.7 514.0,176.0C523.7,187.3 537.0,208.5 542.0,215.0C547.0,221.5 541.8,218.0 544.0,215.0C546.2,212.0 550.8,203.0 555.0,197.0C559.2,191.0 562.8,186.0 569.0,179.0C575.2,172.0 584.2,162.2 592.0,155.0C599.8,147.8 608.8,141.0 616.0,136.0C623.2,131.0 631.8,127.3 635.0,125.0C638.2,122.7 639.7,125.0 635.0,122.0C630.3,119.0 615.0,110.7 607.0,107.0C599.0,103.3 594.5,102.0 587.0,100.0C579.5,98.0 572.7,95.8 562.0,95.0C551.3,94.2 532.3,94.5 523.0,95.0C513.7,95.5 513.5,96.0 506.0,98.0C498.5,100.0 487.3,102.8 478.0,107.0C468.7,111.2 454.5,119.8 450.0,123.0Z"/></g><g class="owl-part from-tl" style="--d:2.1s"><path class="owl-ink owl-horn-l" d="M329.0,42.0C328.5,46.3 327.5,59.5 329.0,69.0C330.5,78.5 333.8,89.7 338.0,99.0C342.2,108.3 348.7,118.0 354.0,125.0C359.3,132.0 363.3,135.5 370.0,141.0C376.7,146.5 376.7,149.3 394.0,158.0C411.3,166.7 456.8,184.8 474.0,193.0C491.2,201.2 488.0,200.3 497.0,207.0C506.0,213.7 522.3,228.7 528.0,233.0C533.7,237.3 531.2,234.7 531.0,233.0C530.8,231.3 530.5,228.8 527.0,223.0C523.5,217.2 517.7,207.3 510.0,198.0C502.3,188.7 489.8,175.2 481.0,167.0C472.2,158.8 469.5,157.2 457.0,149.0C444.5,140.8 419.3,126.8 406.0,118.0C392.7,109.2 385.8,103.5 377.0,96.0C368.2,88.5 359.8,80.5 353.0,73.0C346.2,65.5 339.5,56.0 336.0,51.0C332.5,46.0 333.2,44.5 332.0,43.0C330.8,41.5 329.5,37.7 329.0,42.0Z"/></g><g class="owl-part from-tr" style="--d:2.15s"><path class="owl-ink owl-horn-r" d="M755.0,43.0C754.3,39.0 754.8,40.3 751.0,45.0C747.2,49.7 740.2,61.8 732.0,71.0C723.8,80.2 712.2,91.3 702.0,100.0C691.8,108.7 684.0,114.3 671.0,123.0C658.0,131.7 635.8,144.0 624.0,152.0C612.2,160.0 606.5,165.3 600.0,171.0C593.5,176.7 590.2,180.2 585.0,186.0C579.8,191.8 573.2,200.3 569.0,206.0C564.8,211.7 562.7,215.0 560.0,220.0C557.3,225.0 553.8,233.3 553.0,236.0C552.2,238.7 549.8,240.2 555.0,236.0C560.2,231.8 575.2,217.7 584.0,211.0C592.8,204.3 591.8,204.0 608.0,196.0C624.2,188.0 663.2,172.3 681.0,163.0C698.8,153.7 706.3,147.0 715.0,140.0C723.7,133.0 727.5,128.7 733.0,121.0C738.5,113.3 744.3,102.7 748.0,94.0C751.7,85.3 753.8,77.5 755.0,69.0C756.2,60.5 755.7,47.0 755.0,43.0Z"/></g></g></g></svg></div>`}
+
+/* ---------- Contenido ---------- */
+const ESC=["Local","Nacional","Global"];
+const DIM=["Política","Económica","Cultural","Ambiental"];
+const DIMC={"Política":"var(--t-pol)","Económica":"var(--t-eco)","Cultural":"var(--t-cul)","Ambiental":"var(--t-amb)"};
+const T=[
+{t:"Una tutela llega al colegio",tipo:"Noticia regional",
+ f:`<p>En un municipio de Nariño, Laura, estudiante de grado décimo con discapacidad visual, llevaba un semestre presentando evaluaciones sin material en braille. Sus compañeros le leían en voz alta los exámenes y ella respondía de memoria, lo que la dejaba en desventaja frente al resto del curso. Su familia envió tres cartas al colegio y a la Secretaría de Educación municipal pidiendo el material adaptado, pero no obtuvo respuesta.</p><p>El rector explicó que el colegio no tiene presupuesto propio para comprar impresoras en braille y que esa compra depende de la Secretaría. La Secretaría, por su parte, respondió a un periódico local que los recursos para estudiantes con discapacidad «llegan tarde» y que hay otras prioridades, como reparar los techos de cuatro escuelas rurales.</p><p>Cansada de esperar, Laura interpuso una acción de tutela. Diez días después, un juez del municipio consideró vulnerados sus derechos a la educación y a la igualdad, y ordenó a la Secretaría entregar el material adaptado en un plazo máximo de un mes.</p><blockquote>«Respetamos las decisiones judiciales, pero el juez no puede decirnos en qué gastar el presupuesto», declaró la secretaria de Educación.</blockquote><p class="cite">Caso ilustrativo basado en el artículo 86 de la Constitución Política de 1991.</p>`,
+ esc:"Local",dim:["Política"],ao:["Estudiante y su familia","Juez municipal","Secretaría de Educación","Congreso de la República","Empresas privadas"],ac:["Estudiante y su familia","Juez municipal","Secretaría de Educación"],
+ ex:"El conflicto ocurre en un municipio y se resuelve con autoridades locales: escala local. Es un asunto político porque trata sobre derechos y sobre cómo una ciudadana los exige ante el Estado; el presupuesto aparece, pero como parte de la discusión sobre la obligación del Estado.",
+ q:"De acuerdo con la Constitución de 1991, ¿cuál de las siguientes afirmaciones evalúa mejor la postura de la secretaria de Educación?",
+ o:["Es acertada, porque la separación de poderes impide que un juez dé órdenes que impliquen gastos a una entidad administrativa.","No es acertada, porque cuando una entidad vulnera un derecho fundamental, el juez de tutela puede ordenarle acciones concretas para protegerlo, aunque impliquen gasto.","Es acertada, porque los derechos de las personas con discapacidad solo pueden protegerse mediante leyes aprobadas por el Congreso.","No es acertada, porque los jueces son los encargados de elaborar el presupuesto de las secretarías de educación."],a:1,
+ why:"La tutela protege derechos fundamentales de forma inmediata. Si una entidad los vulnera, el juez puede ordenarle hacer algo concreto, como entregar el material, aunque eso cueste dinero. El juez no elabora el presupuesto: ordena proteger un derecho."},
+
+{t:"Agua u oro en el páramo",tipo:"Crónica",
+ f:`<p>Una empresa minera solicitó permiso para extraer oro a pocos kilómetros de un páramo de Santander. De ese páramo nacen las quebradas que abastecen de agua a dos municipios, donde viven cerca de 40.000 personas, y a más de 600 fincas que cultivan cebolla, papa y mora.</p><p>La alcaldía apoya el proyecto: la empresa promete 300 empleos directos y las regalías equivaldrían al 18 % del presupuesto municipal, que hoy no alcanza para pavimentar las vías veredales. Los campesinos y las juntas de los acueductos veredales se oponen.</p><blockquote>«Sin agua no hay cosecha, y sin cosecha no hay pueblo», dice Ramiro, presidente de la asociación de acueductos veredales.</blockquote><p>La empresa sostiene que usará tecnología moderna que «no afectará el agua» y que, como compensación, sembrará 10.000 árboles en una finca a 30 kilómetros de la mina. Un estudio de una universidad pública advierte que el páramo funciona como una esponja que regula el agua durante todo el año y que su recuperación tarda décadas. El Ministerio de Ambiente debe decidir si la zona hace parte del páramo delimitado, donde la minería está prohibida.</p>`,
+ esc:"Local",dim:["Ambiental","Económica"],ao:["Empresa minera","Campesinos y acueductos veredales","Alcaldía","Ministerio de Ambiente","Organización de las Naciones Unidas"],ac:["Empresa minera","Campesinos y acueductos veredales","Alcaldía","Ministerio de Ambiente"],
+ ex:"El conflicto afecta a dos municipios concretos: escala local. Cruza dos dimensiones: la ambiental (el agua del páramo) y la económica (empleos, regalías y cosechas). La ONU no aparece en el caso.",
+ q:"La empresa afirma que la mina no afectará el agua porque usará tecnología moderna y sembrará 10.000 árboles. ¿Cuál de las siguientes afirmaciones cuestiona mejor ese argumento?",
+ o:["Sembrar árboles en otra zona no garantiza que se mantenga la función del páramo de regular el agua que abastece a los municipios.","Las empresas mineras siempre incumplen los compromisos ambientales que adquieren con las comunidades.","La mina generará 300 empleos directos, lo que beneficiará la economía de los dos municipios.","El Ministerio de Ambiente todavía no ha decidido si la zona hace parte del páramo delimitado."],a:0,
+ why:"La compensación se hace a 30 kilómetros, y el estudio dice que el páramo regula el agua y tarda décadas en recuperarse. Sembrar árboles en otro lugar no reemplaza esa función: eso debilita directamente el argumento de la empresa."},
+
+{t:"Jóvenes sin empleo",tipo:"Tabla de datos",
+ f:`<p>La tabla muestra, por región, la tasa de desempleo de los jóvenes entre 18 y 28 años, el porcentaje de ese grupo que accede a educación superior y el porcentaje de jóvenes que ni estudian ni trabajan.</p><div class="tbl"><table><thead><tr><th>Región</th><th class="n">Desempleo juvenil</th><th class="n">Acceso a ed. superior</th><th class="n">Ni estudian ni trabajan</th></tr></thead><tbody><tr><td>Andina</td><td class="n">15 %</td><td class="n">41 %</td><td class="n">21 %</td></tr><tr><td>Caribe</td><td class="n">18 %</td><td class="n">28 %</td><td class="n">27 %</td></tr><tr><td>Orinoquía-Amazonía</td><td class="n">17 %</td><td class="n">22 %</td><td class="n">29 %</td></tr><tr><td>Pacífica</td><td class="n">24 %</td><td class="n">19 %</td><td class="n">34 %</td></tr></tbody></table></div><p>El Gobierno nacional anunció un subsidio igual en todo el país para las empresas que contraten jóvenes por primera vez. Un gremio de empresarios apoya la medida y afirma que el principal obstáculo es que los jóvenes «no tienen experiencia». Los jóvenes consultados en la región Pacífica responden que allí hay pocas universidades e institutos técnicos, y que muchas empresas no tienen sedes en sus municipios.</p><p class="cite">Datos ilustrativos para la actividad.</p>`,
+ esc:"Nacional",dim:["Económica"],ao:["Jóvenes de 18 a 28 años","Gobierno nacional","Empresas que contratan","Fuerzas Militares","Iglesias"],ac:["Jóvenes de 18 a 28 años","Gobierno nacional","Empresas que contratan"],
+ ex:"La tabla compara regiones de todo el país y la medida es del Gobierno nacional: escala nacional. El tema es económico (empleo y formación para el trabajo). Los actores son quienes buscan empleo, quienes lo ofrecen y el Estado que diseña la política.",
+ q:"Con base en la tabla y en las posturas descritas, ¿cuál de las siguientes medidas atendería mejor la situación de la región Pacífica?",
+ o:["Concentrar el subsidio a la contratación en la región Andina, donde hay más jóvenes con formación para ocupar los empleos.","Ampliar la oferta de educación superior y técnica en la región y combinarla con incentivos para que las empresas contraten jóvenes allí.","Mantener el mismo subsidio en todas las regiones, sin otras medidas, porque el desempleo juvenil se explica únicamente por la falta de experiencia.","Reducir los programas de educación superior en la región, porque los datos muestran que estudiar no tiene relación con conseguir empleo."],a:1,
+ why:"La Pacífica tiene el mayor desempleo, el menor acceso a educación superior y el mayor porcentaje de jóvenes que ni estudian ni trabajan; además, sus jóvenes dicen que faltan instituciones y empresas. Una medida que combine formación y empleo en la región responde a esas causas."},
+
+{t:"Un barrio, muchas pantallas",tipo:"Artículo de opinión",
+ f:`<p>En una encuesta en un colegio de Medellín, siete de cada diez estudiantes dijeron que escuchan sobre todo música de artistas extranjeros, descubierta en plataformas de streaming con sede en otros países. Las plataformas recomiendan canciones según lo que más se escucha en el mundo, y pagan a los artistas una fracción de centavo por cada reproducción.</p><blockquote>«Antes llenábamos las fiestas del barrio; ahora los muchachos no conocen el tiple. Los jóvenes de hoy no valoran lo nuestro: solo les interesa lo que viene de afuera», cuenta un músico de cuerda de la comuna.</blockquote><p>Sin embargo, un grupo de jóvenes del mismo barrio mezcló bambuco con ritmos urbanos, subió su canción a esas mismas plataformas y hoy tiene oyentes en México, España y Japón. Con lo que ganan en conciertos, dan clases gratuitas de tiple a niños de la comuna.</p><p>Otros músicos locales cuentan que, aunque perdieron presentaciones en fiestas, ahora venden sus grabaciones a turistas extranjeros que buscan «música auténtica».</p>`,
+ esc:"Global",dim:["Cultural","Económica"],ao:["Jóvenes oyentes","Plataformas digitales internacionales","Músicos locales","Ministerio de Defensa","Juntas de acción comunal"],ac:["Jóvenes oyentes","Plataformas digitales internacionales","Músicos locales"],
+ ex:"Aunque pasa en un barrio, el fenómeno es la globalización: plataformas y oyentes de varios países. Es cultural (gustos, identidad, tradición) y económico (de qué viven los músicos y quién controla la distribución).",
+ q:"¿Qué supuesto NO justificado contiene la afirmación del músico de cuerda?",
+ o:["Que los músicos locales han perdido presentaciones en las fiestas del barrio.","Que las plataformas de streaming tienen su sede en otros países.","Que todos los jóvenes prefieren solo lo extranjero, aunque el mismo texto muestra jóvenes del barrio que crean y enseñan música tradicional.","Que la música de cuerda forma parte de la tradición cultural de la región."],a:2,
+ why:"El músico generaliza sobre «los jóvenes de hoy», pero el texto muestra jóvenes que mezclan bambuco con ritmos urbanos y enseñan tiple. Esa generalización no está justificada; las otras opciones son hechos que el texto respalda."},
+
+{t:"El viento en territorio wayuu",tipo:"Reportaje",
+ f:`<p>Una empresa de energía planea instalar un parque eólico en La Guajira, dentro del territorio de varias comunidades wayuu. El proyecto venderá energía limpia a la red nacional y promete empleos temporales durante la construcción y pagos anuales a las comunidades.</p><p>Por mandato de la Constitución y del Convenio 169 de la OIT, antes de construir debe hacerse una <b>consulta previa</b>, coordinada por el Ministerio del Interior. En la consulta deben participar las autoridades tradicionales de cada comunidad, que deciden según sus propias formas de organización.</p><p>Algunas familias apoyan el proyecto porque necesitan ingresos durante la sequía. Otras temen que los aerogeneradores afecten cementerios, sitios sagrados y las rutas de pastoreo de chivos, y piden que se escuche a los mayores antes de firmar cualquier acuerdo.</p><blockquote>«Respetamos plenamente la consulta previa. Por eso, si algunas familias no están de acuerdo, igual iniciaremos las obras con las que sí firmen, para no retrasar la transición energética del país», declaró una vocera de la empresa.</blockquote>`,
+ esc:"Local",dim:["Política","Económica","Cultural","Ambiental"],ao:["Comunidades wayuu","Empresa de energía","Ministerio del Interior","Banco de la República","Clubes deportivos"],ac:["Comunidades wayuu","Empresa de energía","Ministerio del Interior"],
+ ex:"El caso ocurre en un territorio concreto: escala local. Aquí se cruzan las cuatro dimensiones: la consulta es un derecho (política), hay energía, empleos y pagos (económica), sitios sagrados (cultural) y territorio de pastoreo (ambiental). Pensar así es pensamiento sistémico.",
+ q:"¿Por qué puede decirse que la declaración de la vocera de la empresa es contradictoria?",
+ o:["Porque la transición energética del país no tiene ninguna relación con los territorios indígenas.","Porque las empresas de energía no tienen permitido firmar acuerdos con comunidades indígenas.","Porque la consulta previa le da a cada familia un poder de veto absoluto sobre cualquier proyecto del país.","Porque dice respetar la consulta previa, pero anuncia que avanzará con acuerdos parciales, sin respetar la decisión colectiva de las comunidades a través de sus autoridades."],a:3,
+ why:"La consulta es un proceso colectivo, con las autoridades tradicionales de cada comunidad. Decir que se respeta y, a la vez, anunciar obras con quienes firmen por separado es contradictorio."},
+
+{t:"Un mundo partido en dos",tipo:"Texto expositivo",
+ f:`<p>Al terminar la Segunda Guerra Mundial, en 1945, Estados Unidos y la Unión Soviética quedaron como las dos grandes potencias. Cada una defendía un modelo distinto: el capitalismo y la democracia liberal, por un lado; el socialismo con economía planificada, por el otro. Europa quedó dividida y cada bloque formó su propia alianza militar: la OTAN y el Pacto de Varsovia.</p><p>Durante más de cuatro décadas, ambas potencias compitieron por aliados, armas nucleares y prestigio, incluida la carrera espacial. Como las dos tenían arsenales nucleares capaces de destruir al adversario, una guerra directa podía significar la destrucción de ambas y de sus aliados en Europa. En 1962, durante la crisis de los misiles en Cuba, los dos gobiernos negociaron en secreto para evitar un ataque nuclear.</p><p>Aunque nunca se enfrentaron directamente, sí apoyaron bandos opuestos en guerras de Corea, Vietnam y Centroamérica. Varios países de Asia, África y América Latina, reunidos en el Movimiento de Países No Alineados, intentaron mantenerse al margen de los dos bloques.</p>`,
+ esc:"Global",dim:["Política","Económica"],ao:["Estados Unidos","Unión Soviética","Países No Alineados","Comunidades wayuu","Juntas de acción comunal"],ac:["Estados Unidos","Unión Soviética","Países No Alineados"],
+ ex:"El texto describe un orden mundial: escala global. Las dimensiones son política (bloques, alianzas, poder) y económica (capitalismo frente a economía planificada).",
+ q:"De acuerdo con el texto, ¿cuál de los siguientes enunciados NO explica por qué Estados Unidos y la Unión Soviética evitaron un enfrentamiento militar directo?",
+ o:["Ambas potencias tenían armas nucleares capaces de destruir al adversario.","Una guerra directa habría puesto en riesgo a sus aliados en Europa.","Las dos potencias compartían el mismo modelo económico y político.","En momentos de crisis, como en 1962, los dos gobiernos negociaron para evitar un ataque nuclear."],a:2,
+ why:"El texto dice lo contrario: tenían modelos opuestos (capitalismo y socialismo). Las otras tres opciones sí aparecen en el texto como razones para evitar una guerra directa."}
+];
+
+/* ---------- Banco de respaldo: preguntas originales tipo Saber 11 (Sociales y Ciudadanas) ---------- */
+const COMP={PS:"Pensamiento social",IP:"Interpretación y análisis de perspectivas",RS:"Pensamiento reflexivo y sistémico"};
+const BANK=[
+{tema:"Peaje en una vía rural",comp:"RS",tipo:"Choque de intereses",dif:"media",
+ ctx:["La gobernación de un departamento firmó un contrato con una concesión privada para pavimentar 40 kilómetros de una vía terciaria que comunica tres veredas cafeteras con la cabecera municipal. A cambio, la empresa podrá cobrar un peaje durante quince años para recuperar su inversión y obtener ganancias.",
+  "Los caficultores celebran que el café ya no se dañará en los camiones durante el invierno, pero advierten que el peaje, sumado a varios viajes por semana, puede costarles más de lo que ahorran. Los transportadores informales, que hoy cobran tarifas bajas, temen que el peaje los saque del negocio. La concesión, por su parte, sostiene que sin peaje ningún banco financiaría la obra y que la tarifa ya es la más baja permitida."],
+ q:"En la situación descrita, el choque de intereses más directo se presenta entre",
+ o:["la concesión, que necesita recuperar la inversión con el peaje, y los productores y transportadores, que deben pagarlo varias veces por semana.","la gobernación, que firmó el contrato, y los bancos, que se niegan a financiar obras en zonas rurales.","los caficultores, que quieren la vía pavimentada, y los transportadores informales, que prefieren la vía destapada.","la cabecera municipal, que recibe el café, y las veredas, que lo producen y lo transportan."],
+ a:0,why:"El conflicto gira alrededor del peaje: la concesión depende de cobrarlo para recuperar su inversión, mientras caficultores y transportadores son quienes lo pagan con frecuencia. Ahí se oponen directamente los intereses.",
+ wo:["","El texto no dice que los bancos se nieguen a financiar ni que estén en conflicto con la gobernación; la concesión solo menciona que sin peaje no habría crédito.","Los dos grupos comparten la preocupación por el costo del peaje; el texto no dice que los transportadores prefieran la vía destapada.","El texto no presenta ninguna disputa entre la cabecera y las veredas."]},
+
+{tema:"Presupuesto participativo",comp:"PS",tipo:"Constitución y participación",dif:"media",
+ ctx:["En un municipio del Huila, la alcaldía abrió un proceso de presupuesto participativo: cada comuna puede decidir, mediante votación de sus habitantes, en qué invertir una parte del presupuesto de inversión del año siguiente. En la comuna 3 ganó la propuesta de construir un polideportivo; en la comuna 5, la de arreglar el puesto de salud.",
+  "Un concejal de la oposición afirma que el proceso es inconstitucional porque, según él, «la plata pública solo la puede decidir el Concejo» y los ciudadanos «no tienen por qué meterse en eso». La alcaldía responde que el Concejo sigue aprobando el presupuesto total y que el proceso solo amplía la participación en la priorización de una parte de la inversión."],
+ q:"De acuerdo con la Constitución Política de 1991, ¿cuál de las siguientes afirmaciones evalúa mejor la postura del concejal?",
+ o:["Es correcta, porque la democracia colombiana es exclusivamente representativa y los ciudadanos solo participan eligiendo a sus representantes.","Es incorrecta, porque la Constitución promueve la democracia participativa y permite que los ciudadanos incidan en las decisiones que los afectan, sin eliminar las funciones del Concejo.","Es correcta, porque el presupuesto participativo reemplaza al Concejo en la aprobación del presupuesto municipal.","Es incorrecta, porque la Constitución obliga a todos los municipios a decidir el presupuesto completo mediante votación popular."],
+ a:1,why:"La Constitución de 1991 define a Colombia como una democracia participativa: además de elegir, los ciudadanos pueden incidir en las decisiones públicas. El proceso no le quita al Concejo su función de aprobar el presupuesto.",
+ wo:["Es falsa: desde 1991 la democracia colombiana es participativa, no solo representativa.","","El texto dice lo contrario: el Concejo sigue aprobando el presupuesto total.","Exagera: la Constitución promueve la participación, pero no obliga a votar todo el presupuesto."]},
+
+{tema:"Discurso sobre el transporte público",comp:"IP",tipo:"Idea central",dif:"alta",
+ ctx:["Durante un foro sobre movilidad en una ciudad intermedia, el gerente de la empresa pública de buses pronunció este discurso ante concejales y líderes comunales:"],
+ cita:{autor:"Gerente de la empresa de transporte",texto:"Sabemos que los usuarios están cansados de esperar el bus bajo la lluvia, y tienen razón. Pero también sabemos que cada vez que la tarifa se congela por presiones políticas, la empresa pierde dinero, deja de comprar repuestos y la flota envejece. No podemos seguir prometiendo buses nuevos con tarifas de hace cinco años. Una ciudad que quiere transporte digno tiene que aceptar que ese transporte cuesta, y que alguien, el usuario o el presupuesto municipal, debe pagarlo. Yo prefiero que lo pague el presupuesto, pero si el Concejo no aprueba ese subsidio, la tarifa tendrá que subir."},
+ q:"¿Cuál es la idea que el gerente defiende con mayor énfasis en su discurso?",
+ o:["Los usuarios tienen la culpa de la mala calidad del servicio porque se quejan demasiado.","El Concejo debe aumentar la tarifa del bus de inmediato para comprar buses nuevos.","Mejorar el transporte público requiere financiación suficiente, ya sea con un subsidio municipal o con un aumento de la tarifa.","La empresa de buses debería privatizarse para dejar de depender de decisiones políticas."],
+ a:2,why:"Todo el discurso insiste en que el servicio cuesta y alguien debe pagarlo: prefiere un subsidio del presupuesto y, si no llega, una tarifa más alta. Esa es la idea central.",
+ wo:["El gerente dice que los usuarios «tienen razón»; no los culpa.","El gerente prefiere que pague el presupuesto; subir la tarifa es su segunda opción, no lo que pide de inmediato.","","El discurso no menciona la privatización en ningún momento."]},
+
+{tema:"Columna sobre migración",comp:"IP",tipo:"Prejuicio",dif:"alta",
+ ctx:["En los últimos años, Colombia ha recibido a cerca de tres millones de personas migrantes provenientes de Venezuela. En un periódico regional se publicó una columna de opinión sobre el aumento de los hurtos en el centro de una ciudad fronteriza. Uno de sus apartes dice:",
+  "Los datos de la Policía muestran que los hurtos en el centro subieron un 18 % en el último año. Ese mismo año llegaron miles de migrantes a la ciudad. La conclusión es evidente: si queremos recuperar la seguridad, la alcaldía debe restringir la permanencia de los venezolanos en el centro."],
+ q:"El fragmento anterior contiene un prejuicio que no está justificado. ¿Cuál es?",
+ o:["Que los hurtos en el centro aumentaron un 18 % en el último año.","Que el aumento de hurtos se explica por la llegada de personas migrantes, solo porque ambos hechos ocurrieron al mismo tiempo.","Que la alcaldía tiene la responsabilidad de garantizar la seguridad en el centro de la ciudad.","Que la ciudad recibió a miles de personas migrantes durante el último año."],
+ a:1,why:"El columnista atribuye los hurtos a un grupo nacional sin ninguna prueba: solo porque los dos hechos coinciden en el tiempo. Generalizar sobre un grupo sin evidencia es un prejuicio.",
+ wo:["Es un dato que la columna atribuye a la Policía, no un prejuicio.","","Es una función reconocida de las autoridades locales; no es un juicio sobre un grupo de personas.","Es un hecho que el texto presenta como contexto; no es un prejuicio."]},
+
+{tema:"Titular sobre las pensiones",comp:"IP",tipo:"Contradicción",dif:"alta",
+ ctx:["Un noticiero abrió su emisión con el siguiente titular: «La nueva reforma pensional asegura que todos los adultos mayores tendrán una pensión digna, siempre y cuando hayan cotizado al menos 1.000 semanas durante su vida laboral».",
+  "Según cifras oficiales, más de la mitad de los trabajadores del país trabaja en la informalidad y nunca llega a cotizar esa cantidad de semanas. Un analista invitado afirmó que el titular, tal como está redactado, presenta la reforma de manera contradictoria."],
+ q:"¿Por qué puede decirse que el titular es contradictorio?",
+ o:["Porque mezcla temas económicos con temas sociales, que deberían tratarse por separado.","Porque una pensión digna depende de la voluntad política del gobierno y no de una reforma.","Porque las 1.000 semanas son demasiadas para cualquier trabajador del país.","Porque promete una pensión para «todos» los adultos mayores, pero la condiciona a un requisito que muchos no pueden cumplir."],
+ a:3,why:"La contradicción está dentro del mismo titular: dice «todos» y enseguida pone una condición que, según los datos, más de la mitad de los trabajadores no cumple.",
+ wo:["Mezclar lo económico y lo social no es una contradicción; muchas políticas tienen las dos dimensiones.","Es una opinión que no explica por qué el titular se contradice a sí mismo.","El texto no dice que nadie pueda cumplirlas; dice que muchos informales no lo logran. «Cualquier trabajador» exagera.",""]},
+
+{tema:"Deforestación y ganadería",comp:"RS",tipo:"Lectura de datos",dif:"alta",
+ tabla:{cols:["Año","Hectáreas deforestadas (región amazónica)","Cabezas de ganado en la región"],filas:[["2016","70.000","1,9 millones"],["2018","138.000","2,4 millones"],["2020","109.000","2,8 millones"],["2022","69.000","3,0 millones"]]},
+ ctx:["Un grupo de estudiantes revisó datos ilustrativos sobre la región amazónica colombiana, organizados en la tabla. También leyó un informe según el cual buena parte de los bosques talados se convierte primero en potreros, y que en 2021 y 2022 aumentaron los controles de las autoridades ambientales y los acuerdos de conservación con comunidades campesinas.",
+  "Uno de los estudiantes concluye: «Como la deforestación bajó en 2022, la ganadería ya no tiene ninguna relación con la pérdida de bosque»."],
+ q:"¿Cuál de las siguientes afirmaciones evalúa mejor la conclusión del estudiante?",
+ o:["Es acertada, porque la tabla muestra que la deforestación de 2022 fue la más baja de todo el periodo.","No es acertada, porque la cantidad de ganado siguió creciendo y la caída de la deforestación puede deberse a otros factores, como los controles y los acuerdos mencionados.","Es acertada, porque si la ganadería causara deforestación, ambas cifras tendrían que subir y bajar exactamente al mismo tiempo.","No es acertada, porque la tabla demuestra que la ganadería es la única causa de la deforestación en la región."],
+ a:1,why:"Que un año baje la deforestación no elimina la relación con la ganadería: el ganado siguió aumentando y el texto menciona otros factores (controles y acuerdos) que pueden explicar la caída.",
+ wo:["Además, 2022 no es el valor más bajo de forma clara (2016 fue similar); y un solo dato no prueba que la relación desaparezca.","","Las relaciones sociales y ambientales rara vez son tan exactas; varios factores influyen a la vez.","La tabla no puede probar que sea la «única» causa; esa conclusión también exagera."]},
+
+{tema:"Pico y placa ampliado",comp:"RS",tipo:"Consecuencia no esperada",dif:"media",
+ ctx:["Para reducir los trancones, la alcaldía de una ciudad grande amplió el pico y placa: ahora cada carro particular no puede circular dos días a la semana, en lugar de uno. La medida busca que más personas usen el transporte público o la bicicleta.",
+  "Seis meses después, un estudio encontró que el número de carros matriculados en la ciudad había aumentado un 12 %. Muchas familias compraron un segundo vehículo, usualmente más viejo y más contaminante, con un número de placa distinto para poder circular todos los días."],
+ q:"¿Cuál de las siguientes es una consecuencia NO esperada de la medida?",
+ o:["Que más personas usen el transporte público durante los días de restricción.","Que disminuya la cantidad de carros que circulan en las horas pico.","Que aumente el parque automotor y la contaminación por la compra de segundos vehículos.","Que la alcaldía reciba quejas de algunos conductores por la restricción."],
+ a:2,why:"La medida buscaba menos carros en la calle; comprar un segundo carro, más viejo y contaminante, va en contra de su propósito. Eso es una consecuencia no esperada.",
+ wo:["Es justamente lo que la medida buscaba: es una consecuencia esperada.","También es el objetivo de la medida, no un efecto inesperado.","","Las quejas son previsibles ante cualquier restricción; no van en contra del propósito de la medida."]},
+
+{tema:"Mecanismo para un derecho colectivo",comp:"PS",tipo:"Constitución y participación",dif:"alta",
+ ctx:["Una empresa de reciclaje instaló una planta junto a un humedal de Bogotá. Desde entonces, los vecinos de tres barrios denuncian malos olores, basuras que llegan al agua y la muerte de aves. Han enviado cartas a la alcaldía local y a la autoridad ambiental, sin respuesta.",
+  "En una reunión, una vecina propone presentar una acción de tutela; otro vecino dice que no sirve porque el problema afecta a toda la comunidad y al ambiente, no a una sola persona; un tercero propone convocar un referendo nacional. La líder comunal consulta a una abogada para escoger el mecanismo más adecuado."],
+ q:"Según la Constitución, ¿cuál es el mecanismo más adecuado para proteger el derecho afectado en este caso?",
+ o:["La acción popular, porque protege derechos colectivos como el goce de un ambiente sano.","El referendo, porque permite que toda la ciudadanía decida sobre el humedal.","El derecho de petición, porque obliga a la empresa a cerrar la planta de inmediato.","La acción de cumplimiento, porque sirve para proteger a cada vecino de manera individual."],
+ a:0,why:"El derecho a un ambiente sano es un derecho colectivo, y la Constitución (art. 88) creó la acción popular para protegerlo. La tutela está pensada para derechos fundamentales de personas concretas.",
+ wo:["","Un referendo nacional no es el mecanismo para resolver un daño ambiental concreto en un barrio.","El derecho de petición obliga a responder solicitudes, pero no ordena cerrar una planta.","La acción de cumplimiento sirve para exigir que se cumpla una ley o acto administrativo, y no protege a cada vecino individualmente."]},
+
+{tema:"Gobierno escolar",comp:"PS",tipo:"Constitución y participación",dif:"media",
+ ctx:["En un colegio público de Pereira, el rector decidió cambiar el horario de descanso sin consultar a nadie. El personero estudiantil recogió firmas y pidió que el tema se discutiera en el consejo directivo, donde hay representantes de estudiantes, docentes, padres y egresados.",
+  "El rector respondió que el personero «solo está para organizar eventos» y que las decisiones del colegio «son del rector». Varios estudiantes quieren saber si el personero tiene razón al pedir que el tema se discuta en el consejo directivo."],
+ q:"¿Cuál de las siguientes afirmaciones describe mejor la situación?",
+ o:["El rector tiene razón, porque en los colegios públicos todas las decisiones dependen solo de él.","El personero se equivoca, porque su función es exclusivamente organizar actividades culturales.","El personero actúa dentro de su función de promover los derechos y deberes de los estudiantes, y el gobierno escolar existe para que la comunidad participe en las decisiones.","Los estudiantes deberían convocar un paro, porque es la única manera legal de cambiar una decisión del rector."],
+ a:2,why:"La ley crea el gobierno escolar para que la comunidad educativa participe en las decisiones, y el personero tiene la función de promover los derechos de los estudiantes. Pedir que el consejo directivo estudie el tema está dentro de sus funciones.",
+ wo:["Es falsa: el gobierno escolar (consejo directivo, consejo académico) existe precisamente para que no todo dependa del rector.","Es falsa: el personero promueve los derechos y deberes estudiantiles, no solo eventos.","","Exagera: hay otros caminos legales, como el que siguió el personero."]},
+
+{tema:"Hambre en La Guajira",comp:"RS",tipo:"Compatibilidad de soluciones",dif:"alta",
+ ctx:["Ante las muertes de niños por desnutrición en comunidades wayuu de La Guajira, un comité regional propuso cuatro medidas: (1) construir pozos y sistemas de almacenamiento de agua en las rancherías; (2) entregar complementos nutricionales adaptados a las costumbres alimentarias wayuu; (3) formar a madres comunitarias wayuu como gestoras de salud en su propia lengua; (4) apoyar huertas familiares resistentes a la sequía.",
+  "Un funcionario del nivel central opina que el comité «debería escoger una sola medida, porque intentar varias a la vez es mezclar temas que no tienen nada que ver»."],
+ q:"Frente a la opinión del funcionario, se puede afirmar que las cuatro medidas son",
+ o:["incompatibles, porque atienden aspectos distintos: agua, alimentación, salud y producción.","compatibles, porque atacan diferentes causas de un mismo problema y respetan la cultura de las comunidades.","incompatibles, porque una política para comunidades indígenas solo puede ser cultural.","compatibles, porque todas buscan exclusivamente aumentar la producción agrícola de la región."],
+ a:1,why:"La desnutrición tiene varias causas (falta de agua, de alimentos, de atención en salud). Atacarlas a la vez no es contradictorio sino complementario, y las medidas incluyen la lengua y las costumbres wayuu.",
+ wo:["Que atiendan aspectos distintos no las vuelve incompatibles; al contrario, se complementan.","","Es falsa: los problemas de las comunidades indígenas también tienen dimensiones económicas, ambientales y de salud.","Solo la medida 4 tiene que ver con producción; «exclusivamente» es falso."]},
+
+{tema:"Estudio sobre bebidas azucaradas",comp:"IP",tipo:"Credibilidad de la fuente",dif:"alta",
+ ctx:["El Congreso discute un impuesto a las bebidas azucaradas para reducir la obesidad infantil. Durante el debate, una asociación de productores de gaseosas presentó un estudio que concluye que el impuesto «no reducirá el consumo y solo afectará a las familias pobres».",
+  "Una periodista revisó el documento y encontró que fue financiado por las mismas empresas productoras, que no fue revisado por expertos independientes y que no publica la base de datos con la que se hicieron los cálculos. Por eso, recomendó a los ciudadanos ser cautelosos con sus conclusiones."],
+ q:"¿Cuál de las siguientes razones apoya mejor la recomendación de la periodista?",
+ o:["Los estudios económicos nunca son confiables porque se basan en suposiciones.","Las familias pobres no consumen bebidas azucaradas, así que el estudio es falso.","El estudio proviene de una de las partes interesadas en el resultado del debate y no permite verificar sus datos.","Los impuestos siempre reducen el consumo de cualquier producto."],
+ a:2,why:"Quien financia el estudio tiene interés directo en que el impuesto no se apruebe, y además nadie puede revisar sus datos. Esas dos razones justifican ser cautelosos.",
+ wo:["Generaliza: hay estudios económicos rigurosos; el problema aquí es este estudio en particular.","El texto no dice eso; es una afirmación inventada.","","Es una generalización falsa y no responde por qué desconfiar de la fuente."]},
+
+{tema:"Migración del campo a la ciudad",comp:"RS",tipo:"NO explica",dif:"media",
+ ctx:["En un municipio cafetero de Caldas, la población rural se redujo casi a la mitad en veinte años. Los jóvenes se van a estudiar a Manizales o a Bogotá y pocos regresan. Los caficultores mayores cuentan que el precio del café varía mucho y que hay años en que la cosecha no alcanza para cubrir los costos.",
+  "Además, en las veredas no hay colegios con educación media completa, el internet llega con dificultad y los jóvenes dicen que en la ciudad encuentran más opciones de trabajo y de estudio. Al mismo tiempo, en el municipio se abrió un hotel campestre que contrató a quince personas de la zona."],
+ q:"De acuerdo con el contexto, ¿cuál de los siguientes enunciados NO explica la salida de los jóvenes del campo?",
+ o:["La falta de educación media completa en las veredas.","La inestabilidad de los ingresos que deja el cultivo del café.","Las mayores oportunidades de estudio y trabajo en la ciudad.","La apertura de un hotel campestre que generó empleo en la zona."],
+ a:3,why:"El hotel creó empleo local, así que, si acaso, ayuda a que algunas personas se queden. No explica por qué se van. Las otras tres opciones sí son razones de la migración.",
+ wo:["Sí explica la salida: para terminar sus estudios, los jóvenes deben irse.","Sí explica la salida: el café no garantiza ingresos estables.","Sí explica la salida: la ciudad los atrae con más opciones.",""]},
+
+{tema:"Repartidores de plataformas",comp:"IP",tipo:"Argumento a favor",dif:"alta",
+ ctx:["Miles de repartidores trabajan con aplicaciones de domicilios en las ciudades del país. Las empresas los consideran «socios independientes»: no tienen horario fijo, eligen cuándo conectarse y no reciben salario sino un pago por cada entrega. Por eso, las empresas no pagan su seguridad social.",
+  "Un grupo de repartidores protestó para exigir que se les reconozca una relación laboral. Argumentan que la aplicación decide qué pedidos reciben, les baja la calificación si rechazan entregas y puede desconectarlos sin explicación."],
+ q:"¿Cuál de los siguientes argumentos apoya mejor la postura de los repartidores?",
+ o:["Si la empresa controla la asignación del trabajo y puede sancionar o desconectar a los repartidores, la relación se parece más a la de un empleado que a la de un socio independiente.","Los repartidores eligen cuándo conectarse, así que tienen la libertad propia de un trabajador independiente.","Las aplicaciones de domicilios generan empleo para muchas personas que no encuentran trabajo formal.","Si las empresas pagaran la seguridad social, el precio de los domicilios subiría para los clientes."],
+ a:0,why:"La postura de los repartidores es que existe una relación laboral. El argumento que la apoya muestra subordinación: la empresa controla, sanciona y desconecta, como haría un empleador.",
+ wo:["","Apoya la postura de las empresas, no la de los repartidores.","Es un argumento a favor de las plataformas en general; no apoya el reconocimiento de una relación laboral.","Es un argumento en contra de la exigencia de los repartidores."]},
+
+{tema:"Consulta popular minera",comp:"RS",tipo:"Choque de intereses",dif:"alta",
+ ctx:["En un municipio del Tolima, los habitantes votaron en una consulta popular y más del 90 % rechazó la minería de oro en su territorio. El Ministerio de Minas había otorgado previamente un título minero a una empresa multinacional, que ya había invertido en estudios de exploración.",
+  "El alcalde afirma que la voluntad del pueblo debe respetarse. El Ministerio sostiene que el subsuelo pertenece a la Nación y que un municipio no puede decidir solo sobre recursos de todo el país. La empresa anuncia que demandará al Estado si no puede explotar el título. Los campesinos temen por el agua de los ríos que usan para sus cultivos de arroz."],
+ q:"En esta situación, la tensión institucional más importante se da entre",
+ o:["los campesinos arroceros y la empresa multinacional, por el precio del arroz.","la autonomía del municipio para decidir sobre su territorio y la competencia de la Nación sobre el subsuelo.","el alcalde y los campesinos, que tienen posiciones opuestas sobre la minería.","el Ministerio de Minas y la empresa, que quieren cosas distintas sobre el título minero."],
+ a:1,why:"El fondo del conflicto es quién decide: el municipio, que votó en contra, o la Nación, dueña del subsuelo, que ya otorgó el título. Esa tensión entre niveles del Estado es la central.",
+ wo:["El texto no habla del precio del arroz; los campesinos temen por el agua.","","El alcalde y los campesinos están del mismo lado: ambos defienden la decisión de la consulta.","El Ministerio otorgó el título y defiende que se respete; no está en contra de la empresa."]},
+
+{tema:"El Frente Nacional",comp:"PS",tipo:"Consecuencia",dif:"media",
+ ctx:["Entre 1958 y 1974, los partidos Liberal y Conservador acordaron el Frente Nacional: se turnaban la presidencia cada cuatro años y se repartían por partes iguales los cargos públicos. El pacto buscaba terminar la violencia entre ambos partidos, que había causado cientos de miles de muertes.",
+  "Durante ese periodo disminuyó la violencia entre liberales y conservadores. Sin embargo, otros grupos políticos, como sectores de izquierda y movimientos campesinos, no podían llegar al poder por la vía electoral, porque el sistema solo reconocía a los dos partidos tradicionales."],
+ q:"De acuerdo con el texto, una consecuencia del Frente Nacional fue",
+ o:["la desaparición total de la violencia política en Colombia.","la exclusión de las fuerzas políticas distintas a los dos partidos tradicionales.","la creación de muchos partidos políticos nuevos que compitieron por la presidencia.","el fortalecimiento de la participación electoral de los movimientos campesinos."],
+ a:1,why:"El texto dice que solo se reconocían los dos partidos tradicionales y que otros grupos no podían llegar al poder por elecciones. Esa exclusión fue una consecuencia del pacto.",
+ wo:["Exagera: el texto dice que disminuyó la violencia bipartidista, no toda la violencia política.","","Es lo contrario de lo que describe el texto.","Es lo contrario: los movimientos campesinos quedaron por fuera del sistema."]},
+
+{tema:"Libertad de prensa",comp:"PS",tipo:"Constitución y participación",dif:"media",
+ ctx:["Un periódico digital publicó una investigación sobre posibles irregularidades en la contratación de un ministerio. Al día siguiente, el ministro declaró que la publicación «hace daño al país» y anunció que pedirá al Gobierno expedir un decreto para cerrar temporalmente el medio mientras se investiga si la información es cierta.",
+  "Varias organizaciones de periodistas rechazaron el anuncio. Recordaron que si la información fuera falsa, las personas afectadas podrían pedir una rectificación o acudir a los jueces."],
+ q:"A la luz de la Constitución, el anuncio del ministro",
+ o:["es válido, porque el Gobierno puede cerrar los medios que critiquen a sus funcionarios.","es válido, porque mientras se investiga la información, la prensa debe suspender sus publicaciones.","vulnera la libertad de prensa, porque la Constitución prohíbe la censura y prevé mecanismos como la rectificación.","vulnera el derecho a la salud, porque las noticias negativas afectan a los ciudadanos."],
+ a:2,why:"El artículo 20 de la Constitución garantiza la libertad de prensa y dice que no habrá censura. Si la información es falsa, existe el derecho a la rectificación y los jueces; cerrar el medio sería censura.",
+ wo:["Es falsa: la Constitución prohíbe la censura y protege la crítica a los funcionarios.","Suspender un medio mientras se investiga es una forma de censura previa.","","No tiene relación con el derecho a la salud; el derecho en juego es la libertad de prensa."]},
+
+{tema:"Víctimas y reincorporación",comp:"IP",tipo:"Perspectivas",dif:"alta",
+ ctx:["En un municipio del Cauca funciona un proyecto productivo de café donde trabajan excombatientes que firmaron el acuerdo de paz. La alcaldía propone ampliar el proyecto y vincular también a familias campesinas de la zona.",
+  "Una asociación de víctimas se opone: dice que primero deben conocer la verdad sobre lo que pasó con sus familiares desaparecidos y que «no es justo que quienes nos hicieron daño reciban apoyo antes que nosotros». Los excombatientes responden que el trabajo les permite construir una vida legal y que han participado en espacios de reconocimiento de responsabilidad. Los campesinos dicen que les interesa el proyecto, pero quieren garantías de seguridad."],
+ q:"¿Cuál de las siguientes afirmaciones describe mejor la perspectiva de la asociación de víctimas?",
+ o:["Rechazan cualquier proyecto productivo en el municipio, porque no les interesa el desarrollo económico.","Consideran que la verdad y la reparación de las víctimas deben tener prioridad frente al apoyo a los excombatientes.","Piensan que los campesinos no deberían participar en proyectos con excombatientes por razones de seguridad.","Creen que los excombatientes no han participado en ningún espacio de reconocimiento de responsabilidad."],
+ a:1,why:"Las víctimas no rechazan el desarrollo: reclaman que primero se atiendan la verdad y la reparación, y les parece injusto que los excombatientes reciban apoyo antes. Esa es su perspectiva.",
+ wo:["Exagera: el texto no dice que rechacen todo proyecto ni el desarrollo económico.","","La preocupación por la seguridad es de los campesinos, no de la asociación de víctimas.","Lo que el texto dice sobre los espacios de reconocimiento lo afirman los excombatientes; las víctimas no hablan de eso."]},
+
+{tema:"Turismo en un río de colores",comp:"RS",tipo:"Dimensiones",dif:"media",
+ ctx:["Un río famoso por sus colores, ubicado en un parque natural de la región de la Orinoquía, recibe cada año más turistas. Los hoteles y guías locales, muchos de ellos antiguos campesinos, viven ahora del turismo. Sin embargo, Parques Nacionales advierte que el exceso de visitantes y el uso de bloqueadores solares afectan las plantas acuáticas que dan el color al río.",
+  "Por eso, se propuso limitar el número de visitantes por día. Los operadores turísticos temen perder ingresos; algunos líderes del pueblo indígena de la zona piden que se respeten los sitios sagrados del río que hoy los turistas usan para bañarse."],
+ q:"¿Cuáles de las siguientes dimensiones están presentes en este caso?",
+ o:["Ambiental, económica y cultural.","Solo ambiental y política.","Económica y militar.","Solo cultural y religiosa."],
+ a:0,why:"Están en juego las plantas del río (ambiental), los ingresos del turismo (económica) y los sitios sagrados indígenas (cultural).",
+ wo:["","Deja por fuera la dimensión económica (ingresos de hoteles y guías) y la cultural (sitios sagrados).","No hay ninguna dimensión militar en el caso.","Deja por fuera las dimensiones ambiental y económica, que son centrales."]},
+
+{tema:"Desinformación electoral",comp:"RS",tipo:"Consecuencia",dif:"media",
+ ctx:["Una semana antes de las elecciones a la alcaldía de una ciudad, circuló por grupos de mensajería un audio falso en el que, supuestamente, uno de los candidatos prometía cerrar todos los comedores comunitarios. El audio fue compartido miles de veces antes de que varios medios verificaran que era un montaje.",
+  "La campaña afectada denunció el hecho ante la autoridad electoral. Algunos expertos señalan que, aunque el audio sea desmentido, muchas personas que lo recibieron nunca ven la verificación."],
+ q:"¿Cuál de las siguientes es una consecuencia probable de la situación descrita?",
+ o:["Que todos los votantes cambien su voto a favor del candidato afectado.","Que algunos ciudadanos decidan su voto con base en información falsa, lo que afecta la calidad de la decisión democrática.","Que los comedores comunitarios de la ciudad se cierren de inmediato.","Que la autoridad electoral cancele las elecciones en toda la ciudad."],
+ a:1,why:"Si muchas personas recibieron el audio y nunca vieron la verificación, es probable que algunas voten creyendo algo falso. Eso afecta la calidad de la decisión democrática.",
+ wo:["Exagera: no hay razón para pensar que todos los votantes cambien su voto.","","El audio era falso; nada indica que los comedores se vayan a cerrar.","Es una medida extrema que el texto no sugiere."]},
+
+{tema:"Lengua indígena en el colegio",comp:"PS",tipo:"Constitución y participación",dif:"alta",
+ ctx:["En un colegio del Vaupés, la mayoría de los estudiantes pertenece a pueblos indígenas y habla su lengua materna en casa. Un grupo de docentes propone que los primeros años se enseñen en la lengua de la comunidad y en español, e incluir en el currículo los conocimientos tradicionales sobre la selva.",
+  "Un funcionario de la secretaría de educación se opone: afirma que «en Colombia la educación debe ser igual para todos» y que enseñar en otras lenguas «retrasa a los niños para el ICFES». Los padres de familia, reunidos en asamblea, apoyan la propuesta de los docentes."],
+ q:"De acuerdo con la Constitución de 1991, la propuesta de los docentes",
+ o:["es contraria a la Constitución, porque el español es el único idioma oficial en todo el territorio.","se ajusta a la Constitución, porque esta reconoce la diversidad étnica y cultural y establece que la enseñanza en comunidades con tradiciones lingüísticas propias será bilingüe.","es contraria a la Constitución, porque los conocimientos tradicionales no pueden hacer parte del currículo.","se ajusta a la Constitución solo si el ICFES aprueba primero la propuesta."],
+ a:1,why:"La Constitución reconoce y protege la diversidad étnica y cultural (art. 7) y establece que las lenguas de los grupos étnicos son oficiales en sus territorios y que la enseñanza en esas comunidades será bilingüe (art. 10).",
+ wo:["Es falsa: el artículo 10 dice que las lenguas de los grupos étnicos también son oficiales en sus territorios.","","Es falsa: la etnoeducación permite incluir los saberes propios de las comunidades.","El ICFES evalúa la educación; no aprueba los currículos ni es requisito constitucional para esta propuesta."]},
+
+{tema:"Impuesto a las bebidas azucaradas",comp:"RS",tipo:"Beneficiarios y efectos",dif:"media",
+ ctx:["Un país aprobó un impuesto que sube el precio de las bebidas azucaradas en un 20 %. Lo recaudado se destina a programas de alimentación escolar y a la compra de bebederos de agua potable en colegios públicos.",
+  "Un año después, el consumo de estas bebidas bajó un 10 %. Los tenderos de barrio dicen que venden menos gaseosa pero más agua y jugos naturales. Las grandes productoras de bebidas reportaron menores ventas en el país."],
+ q:"De acuerdo con la información, ¿a quiénes beneficia principalmente esta medida?",
+ o:["A las grandes productoras de bebidas y a los tenderos.","A los estudiantes de colegios públicos y a la población que reduce su consumo de azúcar.","A los tenderos de barrio y a las grandes productoras de bebidas.","Solo al Estado, que recibe más dinero por impuestos."],
+ a:1,why:"El dinero se invierte en alimentación escolar y agua potable para colegios públicos, y la menor ingesta de azúcar beneficia la salud de quienes reducen su consumo.",
+ wo:["Las productoras venden menos, así que no son beneficiarias principales.","","Las productoras pierden ventas; además, para los tenderos el efecto es mixto.","El dinero no se queda en el Estado: se destina a programas para estudiantes."]},
+
+{tema:"Estigmatización de jóvenes",comp:"IP",tipo:"Consecuencia",dif:"alta",
+ ctx:["Tras varias riñas en un parque de un barrio popular, el alcalde local dio una entrevista: «Vamos a recuperar este parque. Ya sabemos quiénes son los que lo dañan: esos muchachos de gorra y tatuajes que se la pasan ahí sin hacer nada. Les pido a los vecinos que nos avisen cada vez que los vean».",
+  "Un grupo de jóvenes del barrio, que organiza torneos de fútbol y clases de baile en el mismo parque, publicó un comunicado diciendo que la mayoría de quienes usan el parque no tiene nada que ver con las riñas."],
+ q:"¿Cuál de las siguientes es una probable consecuencia de las palabras del alcalde?",
+ o:["Que disminuyan las riñas porque los responsables quedan identificados con precisión.","Que los jóvenes con ciertas características físicas sean señalados y discriminados, aunque no tengan relación con las riñas.","Que aumente la oferta de actividades deportivas en el parque.","Que los vecinos dejen de usar el parque porque ya no hay problemas de seguridad."],
+ a:1,why:"El alcalde no identifica responsables concretos: señala a un grupo por su apariencia (gorra, tatuajes). Esto puede llevar a estigmatizar a jóvenes que no tienen nada que ver con las riñas.",
+ wo:["El alcalde no identifica a los responsables con precisión; describe a un grupo por su apariencia.","","Nada en las palabras del alcalde promueve actividades deportivas.","No tiene sentido: dejar de usar el parque no se sigue de que haya seguridad."]},
+
+{tema:"Revolución Industrial",comp:"PS",tipo:"Consecuencia",dif:"media",
+ ctx:["A finales del siglo XVIII y durante el XIX, en Inglaterra se extendió el uso de máquinas de vapor en fábricas textiles. Miles de familias campesinas migraron a las ciudades para trabajar en ellas. Las jornadas podían superar las 14 horas, trabajaban niños desde los siete años y no existían leyes que protegieran a los obreros.",
+  "Con el tiempo, los trabajadores comenzaron a organizarse en asociaciones para exigir mejores condiciones, a pesar de que al principio estas organizaciones estaban prohibidas."],
+ q:"De acuerdo con el texto, una consecuencia de las condiciones laborales en las fábricas fue",
+ o:["la desaparición inmediata del trabajo infantil en toda Europa.","el surgimiento de organizaciones obreras que reclamaban derechos laborales.","el regreso masivo de las familias obreras al campo.","la eliminación de las máquinas de vapor en las fábricas."],
+ a:1,why:"El texto dice que, ante las duras condiciones, los trabajadores empezaron a organizarse para exigir mejoras. Esas organizaciones son el origen del movimiento obrero y los sindicatos.",
+ wo:["El texto no dice que el trabajo infantil desapareciera, y mucho menos de inmediato.","","El texto describe lo contrario: la migración del campo a la ciudad.","Nada en el texto indica que se eliminaran las máquinas."]},
+
+{tema:"Tratado de libre comercio y leche",comp:"RS",tipo:"Choque de intereses",dif:"alta",
+ ctx:["Por un tratado de libre comercio, cada año entra a Colombia más leche en polvo importada sin aranceles. Las grandes empresas procesadoras la compran porque es más barata que la leche de los productores nacionales, lo que les permite vender yogures y quesos a menor precio.",
+  "Los pequeños ganaderos de Boyacá y Nariño, que venden leche fresca a esas mismas empresas, denuncian que el precio que les pagan bajó y que muchos están vendiendo sus vacas. Los consumidores urbanos, en cambio, notan que algunos lácteos bajaron de precio en los supermercados."],
+ q:"En la situación descrita, ¿entre quiénes se presenta el choque de intereses más directo?",
+ o:["Entre los consumidores urbanos y los supermercados, por el precio de los lácteos.","Entre los pequeños ganaderos nacionales y las procesadoras que prefieren comprar leche importada más barata.","Entre los ganaderos de Boyacá y los de Nariño, que compiten por vender leche.","Entre el Estado colombiano y los consumidores, por el cobro de aranceles."],
+ a:1,why:"Las procesadoras ganan comprando leche importada barata, y eso hace bajar lo que les pagan a los pequeños ganaderos nacionales, que son sus proveedores. Ahí chocan directamente sus intereses.",
+ wo:["Los consumidores se benefician de precios más bajos; el texto no muestra conflicto con los supermercados.","","Los dos grupos tienen el mismo problema; el texto no los presenta como rivales.","El tratado eliminó los aranceles; no hay un cobro que enfrente al Estado y los consumidores."]}
+];
+
+/* Párrafos adicionales: más actores, datos y posturas para que cada situación tenga la extensión del ICFES */
+const MORE=[
+{post:"En una audiencia pública, la Secretaría de Infraestructura explicó que la tarifa será de 9.000 pesos por vehículo de carga y que los habitantes de las veredas podrán pedir un descuento del 30 % si demuestran que viven allí. Los líderes campesinos respondieron que el trámite exige documentos que muchos no tienen y que el descuento no compensa los cuatro o cinco viajes semanales que hacen en cosecha. Un concejal propuso revisar la tarifa cada dos años, pero la concesión advirtió que cualquier cambio debe estar previsto en el contrato."},
+{post:"Según la alcaldía, en el primer año votaron 4.300 personas en las comunas, la mayoría jóvenes y mujeres que nunca habían asistido a una sesión del Concejo. Algunos líderes denuncian que en ciertas comunas las juntas de acción comunal movilizaron votantes para favorecer sus propias propuestas. El personero municipal anunció que acompañará el proceso del próximo año para garantizar que las votaciones sean transparentes."},
+{pre:"La ciudad tiene 600.000 habitantes y sus buses públicos transportan cerca de 180.000 personas al día. Un estudio de la universidad pública mostró que el 60 % de los usuarios pertenece a los estratos 1 y 2, y que la flota tiene en promedio 14 años de uso, cuando lo recomendado son 10. La tarifa no se ha ajustado en cinco años, mientras el precio del diésel y de los repuestos subió más del 40 %."},
+{post:"En la misma edición, el periódico publicó un informe de la Policía según el cual la mayoría de las capturas por hurto en el centro corresponden a bandas locales que operan desde hace años. Una organización de derechos humanos recordó que muchas personas migrantes trabajan como vendedoras ambulantes en esa zona. La columna no menciona ninguno de estos datos y fue compartida miles de veces en redes sociales."},
+{post:"En la entrevista, el ministro de Trabajo explicó que la reforma también crea un subsidio para los adultos mayores que no alcanzaron a pensionarse, aunque ese subsidio es inferior a un salario mínimo y no se considera una pensión. Los gremios señalaron que exigir menos semanas pondría en riesgo las finanzas del sistema; las centrales obreras insistieron en que el requisito deja por fuera a quienes trabajaron toda la vida en la informalidad."},
+{post:"El profesor les pidió revisar también un mapa en el que se observa que los nuevos potreros aparecen, sobre todo, en zonas donde antes había bosque y cerca de carreteras abiertas recientemente. Una de las estudiantes recordó que en 2018 hubo un aumento fuerte de la deforestación en varias zonas del país, y que las cifras de un solo año no muestran por sí solas una tendencia."},
+{post:"La Secretaría de Movilidad defendió la medida con el argumento de que la velocidad promedio en las vías principales subió de 18 a 21 kilómetros por hora durante los primeros meses. Sin embargo, la Secretaría de Ambiente reportó que las partículas contaminantes en el aire aumentaron en varios sectores, y las empresas de buses señalaron que el número de pasajeros casi no cambió."},
+{post:"La empresa sostiene que cuenta con licencia ambiental y que genera 120 empleos para recicladores de la zona, muchos de ellos antes informales. Una organización ambiental presentó fotos y análisis de laboratorio que muestran altos niveles de contaminación en el agua del humedal desde que la planta empezó a funcionar."},
+{post:"Algunos docentes apoyan al rector porque consideran que el nuevo horario mejora la organización del colegio, mientras que varios padres señalan que el cambio obliga a los estudiantes de la tarde a almorzar más tarde. La representante de los estudiantes ante el consejo directivo dice que nadie le informó del cambio antes de que se anunciara en la formación del lunes."},
+{post:"El comité recordó que en varias rancherías el agua más cercana está a más de dos horas a pie, que muchas familias viven de la venta de artesanías y del pastoreo de chivos, y que las autoridades tradicionales wayuu pidieron participar en el diseño de cada medida. Un informe de la Defensoría del Pueblo señala que varios programas anteriores fracasaron, en parte, porque se diseñaron sin consultar a las comunidades."},
+{pre:"Según el Ministerio de Salud, uno de cada cuatro niños en edad escolar tiene sobrepeso, y las bebidas azucaradas son la principal fuente de azúcar añadido en la dieta de los colombianos. Varios países de la región ya aplican impuestos similares y sus resultados se discuten en revistas científicas.",post:"Por su parte, un grupo de investigadores de universidades públicas publicó un análisis, revisado por otros expertos, que estima que el impuesto reduciría el consumo entre un 10 % y un 15 %."},
+{post:"La alcaldía lanzó un programa de becas para que los jóvenes estudien carreras técnicas agropecuarias en el municipio, pero solo se inscribieron doce personas en el primer año. Algunos padres cuentan que prefieren que sus hijos no sigan en el café, porque ellos mismos han vivido muchos años de deudas."},
+{post:"Las empresas responden que si reconocen una relación laboral tendrían que limitar el número de repartidores, porque no podrían pagar la seguridad social de todos, y que muchos repartidores son estudiantes o migrantes que valoran conectarse cuando quieren. El Ministerio de Trabajo anunció que estudia un modelo intermedio, en el que las plataformas aporten a la seguridad social según las horas conectadas."},
+{post:"La Corte Constitucional ha estudiado casos similares y ha señalado que las decisiones sobre el subsuelo deben tomarse de manera coordinada entre la Nación y los municipios. Mientras tanto, el concejo municipal aprobó un acuerdo que prohíbe la minería en su territorio, y el gobernador pidió instalar una mesa de diálogo con todas las partes."},
+{post:"Algunos historiadores consideran que el pacto logró estabilizar las instituciones después de una década de violencia; otros señalan que el cierre del sistema político contribuyó a que, en los años sesenta, algunos grupos optaran por la lucha armada. En las elecciones de esos años la abstención fue alta, pues muchos ciudadanos sentían que el resultado ya estaba definido de antemano."},
+{post:"El periódico mostró los contratos y correos en los que se basó la investigación y ofreció al ministro un espacio para responder. Una asociación de abogados recordó que la Constitución también protege el buen nombre de las personas, pero que para defenderlo existen la rectificación y las acciones judiciales, no el cierre de los medios."},
+{post:"La entidad encargada de la reincorporación explica que los recursos del proyecto provienen de un fondo distinto al de reparación de víctimas. Aun así, la asociación insiste en que las familias de los desaparecidos siguen esperando respuestas mientras ven avanzar el proyecto, y pide que una parte de las ganancias del café se destine a la búsqueda de sus familiares."},
+{post:"La alcaldía municipal teme que la limitación reduzca los impuestos que recibe por turismo; los guías proponen turnos y una charla obligatoria para los visitantes; y un grupo de biólogos sugiere cerrar el río algunos meses al año para que las plantas se recuperen."},
+{post:"Según una encuesta, el 65 % de los votantes de la ciudad se informa principalmente por redes sociales y grupos de mensajería, y solo una minoría consulta medios que verifican sus noticias. La autoridad electoral abrió una investigación, pero advirtió que encontrar a quien creó el audio puede tardar meses."},
+{post:"Un estudio de una universidad regional encontró que los niños que aprenden a leer primero en su lengua materna y luego en español suelen comprender mejor los textos en ambas lenguas al llegar a la secundaria. Algunos padres jóvenes, sin embargo, temen que sus hijos tengan dificultades si después se trasladan a estudiar a una ciudad."},
+{post:"Los productores de bebidas afirman que el impuesto es injusto porque afecta más a los hogares de menores ingresos, que gastan una parte mayor de su dinero en estos productos. El Ministerio de Salud responde que esos mismos hogares son los que más sufren enfermedades como la diabetes y que el recaudo se invierte precisamente en colegios públicos."},
+{post:"En el barrio viven cerca de 2.000 jóvenes entre 14 y 25 años, y el parque es el único espacio deportivo de la zona. La Policía informó que en las riñas de los últimos meses participaron personas de otros barrios y que no hay capturas relacionadas con los jóvenes que organizan los torneos."},
+{post:"Los dueños de las fábricas argumentaban que los salarios bajos permitían vender telas más baratas en todo el mundo, y algunos economistas de la época sostenían que el Estado no debía intervenir en los acuerdos entre patronos y obreros. Mientras tanto, médicos y reformadores sociales publicaban informes sobre las enfermedades y los accidentes frecuentes en los barrios obreros."},
+{post:"El Gobierno sostiene que el tratado permitió exportar más flores, café y frutas, y que creó programas para que los pequeños ganaderos mejoren su productividad. Los gremios lecheros responden que esos programas llegan a muy pocas fincas y piden una salvaguardia que limite la entrada de leche en polvo cuando los precios internos caen."}
+];
+BANK.forEach((q,i)=>{const m=MORE[i];if(!m)return;if(m.pre)q.ctx.unshift(m.pre);if(m.post)q.ctx.push(m.post)});
+
+/* ---------- Explicaciones del búho por caso (escala, dimensiones, actores y cada opción) ---------- */
+const HELP=[
+{en:"Todo ocurre en un municipio de Nariño: el colegio, la Secretaría municipal y el juez del municipio. Por eso es local, aunque la tutela sea una herramienta de todo el país.",
+ dn:{"Política":"Sí aplica: se trata de derechos (educación e igualdad) y de cómo una ciudadana los exige al Estado.","Económica":"No es el centro: el presupuesto aparece como excusa, pero lo que se discute es la obligación de garantizar un derecho.","Cultural":"No aplica: no se discuten tradiciones ni identidad; el tema es el acceso a un derecho.","Ambiental":"No aplica: no aparecen la naturaleza ni el territorio."},
+ an:{"Estudiante y su familia":"Sí participa: Laura es quien reclama su derecho.","Juez municipal":"Sí participa: es quien decide la tutela.","Secretaría de Educación":"Sí participa: es la entidad que debe entregar el material.","Congreso de la República":"No participa: el caso no necesitó una ley nueva; lo resolvió un juez.","Empresas privadas":"No participa: ninguna empresa aparece en el caso."},
+ wo:["Es falsa: la tutela existe justamente para que un juez ordene a una entidad pública proteger un derecho, aunque eso implique gasto.","","Es falsa: los derechos fundamentales se pueden proteger directamente con la tutela, sin esperar una ley.","Es falsa: el juez no elabora presupuestos; ordena una acción concreta para proteger un derecho."]},
+{en:"El conflicto afecta a dos municipios concretos y a un páramo de Santander. Es un problema local.",
+ dn:{"Política":"No es el centro del caso: el Ministerio solo aplica una delimitación; la disputa es por el agua y por los ingresos.","Económica":"Sí aplica: hay empleos, regalías y cosechas en juego.","Cultural":"No aplica: no se discuten costumbres ni identidad.","Ambiental":"Sí aplica: está en juego el agua del páramo."},
+ an:{"Empresa minera":"Sí participa: quiere extraer el oro.","Campesinos y acueductos veredales":"Sí participa: defienden el agua para sus cultivos y sus casas.","Alcaldía":"Sí participa: apoya el proyecto por los empleos y las regalías.","Ministerio de Ambiente":"Sí participa: decide si la zona es páramo protegido.","Organización de las Naciones Unidas":"No participa: no aparece en el caso."},
+ wo:["","Es una generalización absoluta («siempre»): el texto no da ninguna prueba de eso.","No cuestiona el argumento: lo apoya, porque habla de los beneficios de la mina.","Es cierto, pero no dice nada sobre si la tecnología o los árboles protegen el agua."]},
+{en:"La tabla compara regiones de todo el país y la medida es del Gobierno nacional, así que la escala es nacional.",
+ dn:{"Política":"No es el centro: hay una medida del Gobierno, pero lo que se analiza es el empleo y la formación, no leyes ni derechos en disputa.","Económica":"Sí aplica: el tema es el empleo y la formación para el trabajo.","Cultural":"No aplica: no hay datos de costumbres ni de identidad.","Ambiental":"No aplica: no aparecen recursos naturales."},
+ an:{"Jóvenes de 18 a 28 años":"Sí participa: son a quienes describen los datos.","Gobierno nacional":"Sí participa: diseña el subsidio y la política de empleo.","Empresas que contratan":"Sí participa: son quienes ofrecen los empleos y opinan sobre la medida.","Fuerzas Militares":"No participa: no tiene relación con estos datos.","Iglesias":"No participa: no aparecen ni se relacionan con el tema."},
+ wo:["Es contraria a lo que se busca: dejaría sin apoyo a la región con más desempleo.","","Ignora lo que dicen los jóvenes de la Pacífica y usa «únicamente», una generalización que los datos no respaldan.","Es falsa: los datos sugieren lo contrario, porque la región con menos acceso a educación tiene más desempleo."]},
+{en:"Aunque pasa en un barrio de Medellín, el fenómeno es global: plataformas internacionales y oyentes en México, España y Japón.",
+ dn:{"Política":"No aplica: no se habla de leyes, derechos ni del Estado.","Económica":"Sí aplica: está en juego de qué viven los músicos y quién controla la distribución.","Cultural":"Sí aplica: hay gustos, identidad y música tradicional en juego.","Ambiental":"No aplica: no aparece la naturaleza."},
+ an:{"Jóvenes oyentes":"Sí participa: eligen qué música escuchar y algunos también la crean.","Plataformas digitales internacionales":"Sí participa: recomiendan y distribuyen la música en el mundo.","Músicos locales":"Sí participa: pierden o ganan público.","Ministerio de Defensa":"No participa: no tiene nada que ver con la música.","Juntas de acción comunal":"No participa: no se mencionan en el caso."},
+ wo:["Es un hecho que el propio texto confirma; no es un supuesto injustificado.","Es un dato del texto, no un supuesto del músico.","","Es una afirmación razonable sobre la tradición, no la generalización injustificada."]},
+{en:"El proyecto está en un territorio concreto de La Guajira, donde viven las comunidades. Es local.",
+ dn:{"Política":"Sí aplica: la consulta previa es un derecho reconocido por la Constitución.","Económica":"Sí aplica: hay venta de energía, empleos y pagos.","Cultural":"Sí aplica: hay cementerios, sitios sagrados y autoridades tradicionales wayuu.","Ambiental":"Sí aplica: están en juego el territorio y las rutas de pastoreo."},
+ an:{"Comunidades wayuu":"Sí participa: su territorio está en juego.","Empresa de energía":"Sí participa: propone el parque eólico.","Ministerio del Interior":"Sí participa: coordina la consulta previa.","Banco de la República":"No participa: maneja la política monetaria, no los proyectos de energía.","Clubes deportivos":"No participa: no aparecen en el caso."},
+ wo:["Es falsa y no señala ninguna contradicción en lo que dijo la vocera.","Es falsa: la consulta busca precisamente que empresas y comunidades lleguen a acuerdos.","Es un distractor frecuente: la Corte Constitucional ha dicho que, por regla general, la consulta no es un veto absoluto. Además, no explica la contradicción.",""]},
+{en:"El texto describe un orden mundial, con potencias y bloques de países. La escala es global.",
+ dn:{"Política":"Sí aplica: hay bloques, alianzas militares y poder entre potencias.","Económica":"Sí aplica: se enfrentan el capitalismo y la economía planificada.","Cultural":"No es el centro: aunque hubo propaganda, el texto habla de modelos políticos y económicos.","Ambiental":"No aplica: no aparece la naturaleza."},
+ an:{"Estados Unidos":"Sí participa: es una de las dos potencias.","Unión Soviética":"Sí participa: es la otra potencia.","Países No Alineados":"Sí participa: intentaron mantenerse al margen de los bloques.","Comunidades wayuu":"No participa: son de otro caso, no de este texto.","Juntas de acción comunal":"No participa: no aparecen en el texto."},
+ wo:["Sí lo explica: el texto dice que ambas tenían armas capaces de destruir al adversario.","Sí lo explica: el texto dice que una guerra directa pondría en riesgo a sus aliados en Europa.","","Sí lo explica: el texto cuenta que en 1962 negociaron para evitar un ataque nuclear."]}
+];
+
+/* ---------- Estado ---------- */
+const $a=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const sameSet=(a,b)=>a.length===b.length&&b.every(x=>a.includes(x));
+let S={st:"splash",name:"",course:"",err:""},DB=null,UID=null,USER=null,TEACH=false,saved="local",TP={},lastKey="",fx=null;
+let saving=Promise.resolve();
+
+(async()=>{try{if(window.claude&&claude.use){
+  DB=await claude.use("db");USER=await claude.use("user");try{AI=await claude.use("sample")}catch(e){AI=null}if(AI&&["play","free","mode"].includes(S.st)){const y=scrollY;render(true);scrollTo(0,y)}if(AI&&S.st==="free")prefetch()
+  if(USER){try{UID=await USER.id()}catch(e){}try{TEACH=!!(USER.canEdit&&USER.canEdit())}catch(e){}}
+  if(S.st==="reg")render()}}catch(e){}})();
+
+const say=(t,c="",pop=true)=>`<div class="say ${c}${pop?" pop":""}"><p>${t}</p></div>`;
+const NEEDLE=`<svg class="needle" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8 L61 50 L39 50Z" style="fill:var(--gold)"/><path d="M50 92 L61 50 L39 50Z" style="fill:var(--owl)"/><circle cx="50" cy="50" r="6" style="fill:var(--moon-a);stroke:var(--owl);stroke-width:2.5"/></svg>`;
+const foot=()=>`<footer><span>Código U · Ciencias Sociales · Saber 11°</span>${S.st==="reg"&&TEACH?'<button class="link" data-a="teacher">Panel docente</button>':""}</footer>`;
+const topbar=()=>`<div class="topbar"><div class="brand"><div class="moon mini">${OWL(true)}</div>Brújula <span>Social</span></div><span class="pill">${S.pts} / ${T.length*5} pts</span></div>`;
+
+function init(){S.id="b"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);Object.assign(S,{i:0,ph:0,e:null,d:[],ac:[],pa:null,res:[],pts:0,hints:{c:0,q:0},hintTexts:{c:[],q:[]},mode:null,fh:[],fq:null,fpa:null})}
+
+/* ---------- Pantallas ---------- */
+function splash(){return `<div class="splash" data-a="skip" role="button" tabindex="0" aria-label="Entrar a Brújula Social">
+<div class="scene"><div class="ring"><b>N</b><b>S</b><b>E</b><b>O</b><i></i></div><div class="moon"></div>${OWL(false)}</div>
+<h1 class="wordmark">Brújula <span>Social</span></h1><p class="lema">¿Por qué no hacer posible lo imposible?</p><p class="skip">Toca para saltar</p></div>`}
+
+function reg(){return `<div class="scene" style="width:min(190px,52vw)"><div class="ring"><b>N</b><b>S</b><b>E</b><b>O</b><i></i></div><div class="moon"></div>${NEEDLE}</div>
+<div style="display:flex;flex-direction:column;gap:8px"><h1 class="wordmark">Brújula <span>Social</span></h1><p class="lema">¿Por qué no hacer posible lo imposible?</p></div>
+<p class="mute center">En cada caso vas a ubicar la escala, las dimensiones y los actores del problema. Luego responderás una pregunta tipo Saber 11.</p>
+<div class="card"><div class="field"><label for="nm">Nombre completo</label><input id="nm" type="text" maxlength="60" autocomplete="name" value="${esc(S.name)}" placeholder="Nombre y apellidos"></div>
+<div class="field"><span class="lbl">Curso</span><div class="chips">${["10°","11°"].map(c=>`<button class="chip ${S.course===c?"on":""}" data-a="course" data-i="${c}" aria-pressed="${S.course===c}">${c}</button>`).join("")}</div></div>
+${S.err?`<p class="err" role="alert">${S.err}</p>`:""}<button class="btn shine" data-a="start">Comenzar</button></div>`}
+
+function intro(){return `${topbar()}<div style="display:flex;flex-direction:column;gap:6px"><p class="eyebrow">Antes de empezar</p><h2 style="font:700 26px/1.2 var(--f-display)">Cómo leer un caso social</h2></div>
+<div class="guide">
+<div class="card"><b>1. Escala</b><span><b>Local:</b> un municipio, barrio o territorio.<br><b>Nacional:</b> todo el país o varias regiones.<br><b>Global:</b> varios países o el orden mundial.</span></div>
+<div class="card"><b>3. Actores</b><span>Personas, grupos o instituciones que participan en el problema o tienen interés en él. Pueden ser varios.</span></div>
+<div class="card wide"><b>2. Dimensiones</b> <span class="mute">(puede haber varias)</span><div class="dims">
+<div><i style="background:var(--t-pol)"></i><span><b>Política:</b> poder, derechos, leyes y Estado.</span></div>
+<div><i style="background:var(--t-eco)"></i><span><b>Económica:</b> producción, empleo, dinero y recursos.</span></div>
+<div><i style="background:var(--t-cul)"></i><span><b>Cultural:</b> identidad, tradiciones, creencias y costumbres.</span></div>
+<div><i style="background:var(--t-amb)"></i><span><b>Ambiental:</b> naturaleza, territorio y recursos naturales.</span></div></div></div>
+<div class="card wide"><b>Competencias que evalúa el ICFES</b><span>Pensamiento social · Interpretación y análisis de perspectivas · Pensamiento reflexivo y sistémico</span></div>
+</div><button class="btn shine" data-a="go">Ver el primer caso</button>`}
+
+const chips=(arr,sel,key,multi,chk,correct,colored)=>`<div class="chips">${arr.map(v=>{const on=multi?sel.includes(v):sel===v;let c=on?"on":"";if(!chk&&v===S.lastPick)c+=" just";
+ if(chk){const ok=multi?correct.includes(v):correct===v;c=ok?(on?"good":"miss"):on?"bad":"";if(fx&&c&&c!=="miss")c+=" fx"}
+ return `<button class="chip ${c}" data-a="${key}" data-i="${esc(v)}" ${chk?"disabled":""} aria-pressed="${on}">${colored?`<span class="dot" style="background:${DIMC[v]}"></span>`:""}${v}</button>`}).join("")}</div>`;
+
+function play(){const x=T[S.i],chk=S.ph>=1,ok=TP;
+let h=`${topbar()}<div style="display:flex;flex-direction:column;gap:10px"><div class="steps" aria-hidden="true">${T.map((_,i)=>`<i class="${i<S.i?"on":i===S.i?"cur":""}"></i>`).join("")}</div>
+<div class="meta"><span>Caso ${S.i+1} de ${T.length}</span><span>${x.tipo}</span></div></div>
+<article class="card src"><p class="eyebrow">Fuente · ${x.tipo}</p><h2>${x.t}</h2>${x.f}</article>
+<div class="card"><h3>1. Ubica el caso</h3>
+<div class="field"><span class="lbl">Escala</span>${chips(ESC,S.e,"e",0,chk,x.esc)}</div>
+<div class="field"><span class="lbl">Dimensiones (puedes marcar varias)</span>${chips(DIM,S.d,"d",1,chk,x.dim,1)}</div>
+<div class="field"><span class="lbl">Actores involucrados (puedes marcar varios)</span>${chips(x.ao,S.ac,"ac",1,chk,x.ac)}</div>`;
+if(!chk)h+=`<button class="btn" data-a="check" ${S.e&&S.d.length&&S.ac.length?"":"disabled"}>Comprobar</button>${AI?hintBtn():""}`;
+h+=`</div>`;
+if(chk){const all=ok.e&&ok.d&&ok.a;
+ h+=say(`<b>${all?"¡Ubicaste el caso perfecto!":"Mira las respuestas en verde. Las punteadas eran correctas y no las marcaste."}</b> ${x.ex}`,all?"ok":"no",S.ph===1&&fx);
+ h+=`<div class="card"><h3>2. Pregunta tipo Saber 11</h3><p class="q">${x.q}</p>${x.o.map((o,k)=>{let c="";if(S.ph>=2){c=k===x.a?"good":k===S.pa?"bad":"";if(fx&&c)c+=" fx"}
+  return `<button class="opt ${c}" data-a="opt" data-i="${k}" ${S.ph>=2?"disabled":""}><b>${"ABCD"[k]}</b><span>${o}</span></button>`}).join("")}${S.ph===1&&AI?hintBtn():""}</div>`}
+if(S.ph>=2){const r=S.pa===x.a;h+=say(`<b>${r?"¡Correcto!":"La respuesta es la "+"ABCD"[x.a]+"."}</b> ${x.why}`,r?"ok":"no",fx)+`<button class="btn shine" data-a="next">${S.i<T.length-1?"Siguiente caso":"Ver mis resultados"}</button>`}
+return h}
+
+function end(){const m=S.res.reduce((a,r)=>({e:a.e+r.pe,d:a.d+r.pd,a:a.a+r.pa,p:a.p+r.pp}),{e:0,d:0,a:0,p:0}),n=T.length,max=n*5,pct=S.pts/max;
+const bar=(l,v)=>`<div class="bar"><span>${l}</span><div><i style="width:${v/n*100}%"></i></div><span>${v}/${n}</span></div>`;
+const star=on=>`<svg viewBox="0 0 24 24" class="${on?"on":""}" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6z"/></svg>`;
+return `<div class="trophy-row" role="img" aria-label="${[.4,.65,.85].filter(t=>pct>=t).length} de 3 estrellas"><svg class="trophy" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14a12 12 0 0 1-24 0z" style="fill:var(--gold)"/><path d="M20 12h-8v4a10 10 0 0 0 9 10M44 12h8v4a10 10 0 0 1-9 10" style="fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round"/><rect x="29" y="33" width="6" height="10" style="fill:var(--gold-ink)"/><rect x="20" y="43" width="24" height="7" rx="2" style="fill:var(--owl)"/><path d="M27 14l3 3 7-7" style="fill:none;stroke:#fffaf0;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"/></svg><div class="stars">${[.4,.65,.85].map(t=>star(pct>=t)).join("")}</div></div>
+<div class="center" style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Resultado final</p><h2 style="font:700 28px/1.2 var(--f-display)">¡Terminaste, ${esc(S.name.split(" ")[0])}!</h2></div>
+<div class="score" data-count="${S.pts}">${S.pts}<small> / ${max}</small></div>
+${say(pct>=.8?"Excelente. Lees los problemas sociales con escala, dimensiones y actores, como lo pide el ICFES.":pct>=.5?"Buen avance. Repasa los casos donde fallaste y fíjate en las dimensiones que no marcaste.":"Esto se entrena. Vuelve a la guía, repasa con tu profe y verás cómo mejoras.",pct>=.8?"ok":"")}
+<div class="card"><h3>Tu desempeño</h3><div class="bars">${bar("Escala",m.e)}${bar("Dimensiones",m.d)}${bar("Actores",m.a)}${bar("Preguntas",m.p)}</div></div>
+<p class="mute center">${saved==="ok"?"✔ Tus respuestas quedaron registradas para tu profe.":"Tus respuestas se guardaron solo en este dispositivo. Muéstrale esta pantalla a tu profe."}</p>
+<div class="row2"><button class="btn shine" data-a="switch">Probar la práctica ilimitada</button><button class="btn alt" data-a="again">Nueva persona</button></div>`}
+
+/* ---------- Modos: guiado o práctica ilimitada ---------- */
+const DIFW={baja:1,media:1.5,alta:2};
+const LEVELS=[[40,"Nivel 1","Reconoces información explícita en situaciones sociales sencillas."],[55,"Nivel 2","Identificas actores, posturas y dimensiones en situaciones cotidianas."],[70,"Nivel 3","Contrastas perspectivas, evalúas argumentos y reconoces supuestos."],[100,"Nivel 4","Analizas críticamente fuentes, prejuicios y efectos de decisiones en sistemas complejos."]];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+/* Mezcla las opciones para que la letra correcta cambie en cada pregunta */
+function prepQ(src,origen){const perm=shuffle([0,1,2,3]);return {...src,o:perm.map(k=>src.o[k]),wo:perm.map(k=>src.wo[k]),a:perm.indexOf(src.a),origen,n:S.fh.length+1}}
+function fromBank(){if(!S.bag||!S.bag.length)S.bag=shuffle(BANK.map((_,k)=>k));return prepQ(BANK[S.bag.pop()],"banco")}
+function resetHints(){S.hints={c:0,q:0};S.hintTexts={c:[],q:[]}}
+function startFree(){S.st="free";S.fh=S.fh||[];nextFree()}
+/* Siguiente pregunta: la que la IA dejó lista; si aún la está escribiendo, se espera; si no hay IA, el banco */
+function nextFree(){resetHints();S.fpa=null;
+ if(S.queued){S.fq=withN(S.queued);S.queued=null;S.loading=false;prefetch();return}
+ if(genP){S.fq=null;S.loading=true;S.loadT0=Date.now();slowTimer();return}
+ S.fq=fromBank();prefetch()}
+const withN=q=>({...q,n:S.fh.length+1});
+
+/* ---------- Generador de preguntas con IA (guía de estilo propia, inspirada en el formato Saber) ---------- */
+const COMPDESC={PS:"usar conceptos de ciencias sociales, de la Constitución de 1991 y de la historia para comprender una situación",IP:"analizar posturas, argumentos, intereses y prejuicios de distintos actores",RS:"comprender cómo se relacionan dimensiones y actores en un problema, y evaluar efectos y soluciones"};
+const TIPOS={
+ PS:[["Constitución y participación","aplicar un principio, derecho o mecanismo de participación de la Constitución de 1991 al caso"],["Organización del Estado","identificar qué institución o rama del poder público tiene una función y si actúa dentro de ella"],["Proceso histórico","relacionar un proceso histórico con sus causas o consecuencias"]],
+ IP:[["Prejuicio","identificar un prejuicio o generalización no justificada en lo que dice un actor"],["Contradicción","detectar una contradicción interna en un enunciado, discurso o política"],["Argumento a favor","elegir el argumento que mejor apoya la postura de un actor"],["Argumento en contra","elegir el argumento que mejor cuestiona una propuesta"],["Perspectivas","reconocer la postura o el interés de un actor específico"],["Credibilidad de la fuente","evaluar por qué una fuente o afirmación merece cautela"],["Idea central","reconocer la idea que un actor defiende con más énfasis en su discurso"],["Supuesto","identificar un supuesto implícito en una afirmación"]],
+ RS:[["Consecuencia","prever una consecuencia probable de una decisión"],["Consecuencia no esperada","identificar un efecto no buscado de una medida"],["Choque de intereses","identificar entre quiénes y por qué se da el conflicto central"],["Dimensiones","señalar qué dimensiones (política, económica, cultural, ambiental) están presentes"],["Compatibilidad de soluciones","juzgar si varias soluciones propuestas se complementan o se contradicen"],["NO explica","encontrar el enunciado que NO explica un fenómeno descrito"]]};
+const TEMAS=["Constitución de 1991 y derechos fundamentales","Mecanismos de participación ciudadana","Separación de poderes y control político","Gobierno escolar y convivencia","Conflicto armado, víctimas y memoria","Acuerdos de paz y reincorporación","Desplazamiento forzado","Diversidad étnica y cultural","Pueblos indígenas y consulta previa","Comunidades afrocolombianas y territorio","Equidad de género","Discriminación y estereotipos","Migración internacional","Urbanización y migración campo-ciudad","Tenencia de la tierra","Minería y conflictos ambientales","Agua y servicios públicos","Cambio climático y gestión del riesgo","Deforestación y Amazonía","Economía informal y empleo","Impuestos y gasto público","Comercio internacional y globalización","Medios de comunicación y desinformación","Redes sociales y privacidad","Corrupción y transparencia","Descentralización y autonomía territorial","Historia de Colombia en el siglo XIX","Historia de Colombia en el siglo XX","Guerra Fría y orden mundial","Revoluciones y derechos humanos","Organismos internacionales","Movilidad y vida urbana","Salud pública como derecho","Educación y desigualdad","Seguridad alimentaria"];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+let genP=null,genCtl=null,aiPause=0,aiFails=0,aiWarned=false,slowT=null;
+function genSpec(){const order=["IP","RS","PS"],comp=order[(S.fh.length+(S.queued?1:0))%3],last=(S.fh[S.fh.length-1]||{}).tipo;
+ const tipos=TIPOS[comp].filter(t=>t[0]!==last),tipo=pick(tipos.length?tipos:TIPOS[comp]);
+ const recent=S.fh.slice(-15).map(x=>x.tema),temas=TEMAS.filter(t=>!recent.some(r=>r&&r.includes(t.split(" ")[0])));
+ return {comp,tipo:tipo[0],tdesc:tipo[1],tema:pick(temas.length?temas:TEMAS),dif:Math.random()<.6?"alta":"media",recent}}
+function genPrompt(s){return `Eres un experto en evaluación educativa que diseña preguntas para la prueba de Sociales y Ciudadanas del Saber 11 (ICFES, Colombia). Escribe UNA pregunta ORIGINAL de selección múltiple con única respuesta.
+
+OBJETIVO DE ESTA PREGUNTA
+- Competencia: ${COMP[s.comp]}: ${COMPDESC[s.comp]}.
+- Tipo de tarea: ${s.tipo}: ${s.tdesc}.
+- Tema: ${s.tema}.
+- Dificultad: ${s.dif}.
+
+CÓMO DEBE SER (sigue todo)
+1. Contexto: una situación de 180 a 320 palabras en 3 o 4 párrafos, realista y situada en Colombia (o en otro país si el tema lo pide), con al menos tres actores (personas, grupos o instituciones) que tienen posturas o intereses distintos. Incluye datos concretos: cifras, lugares genéricos ("un municipio del Cauca"), plazos. Si sirve a la tarea, incluye una cita textual de un actor ficticio o una tabla pequeña.
+2. Enunciado: debe exigir inferir, comparar perspectivas, evaluar argumentos o prever efectos a partir del contexto. No debe poder responderse copiando una frase del texto ni solo de memoria (en tareas de Constitución, el estudiante aplica un principio constitucional al caso).
+3. Opciones: cuatro, de longitud y estilo parecidos, todas plausibles para quien lee rápido, y una sola correcta sin discusión. Construye los distractores con errores típicos: una afirmación verdadera que no responde lo preguntado; una generalización absoluta ("siempre", "solo", "todos"); atribuir una postura al actor equivocado; invertir causa y efecto o confundir medio con fin; un dato que el texto no menciona.
+4. ${s.dif==="alta"?"Dificultad alta: la respuesta correcta exige integrar información de dos o más párrafos y descartar un distractor muy cercano.":"Dificultad media: la respuesta exige una inferencia clara a partir de un párrafo, con distractores plausibles."}
+
+REGLAS
+- No uses nombres de personas reales ni atribuyas hechos inventados a personas, empresas o partidos reales; usa cargos genéricos ("la alcaldesa", "una empresa minera") o nombres ficticios comunes.
+- Puedes citar con exactitud instituciones y normas reales (Constitución de 1991, Corte Constitucional, Congreso, ICBF).
+- No copies ni parafrasees preguntas publicadas por el ICFES.
+- Español de Colombia, claro, para estudiantes de grado 10° y 11°.
+${s.recent.length?`- No repitas estos temas recientes: ${s.recent.join("; ")}.`:""}
+
+FORMATO
+Responde solo con un objeto JSON con esta forma exacta:
+{"tema":"título corto","contexto":["párrafo 1","párrafo 2","párrafo 3"],"cita":null,"tabla":null,"enunciado":"...","opciones":["...","...","...","..."],"correcta":0,"porque":"por qué la correcta es la correcta (máximo 60 palabras)","descartes":["por qué la opción 1 es incorrecta, o \\"\\" si es la correcta","...","...","..."]}
+"cita" puede ser {"autor":"cargo o nombre ficticio","texto":"..."} y "tabla" puede ser {"columnas":["..."],"filas":[["..."]]}. "correcta" es el índice (0 a 3) de la opción correcta.`}
+/* Revisa y normaliza lo que devuelve la IA; si algo no cuadra, se descarta */
+function normQ(j,s){const str=v=>typeof v==="string"&&v.trim();
+ if(!j||typeof j!=="object")throw {code:"invalid_shape"};
+ const ctx=(Array.isArray(j.contexto)?j.contexto:[]).filter(str).map(p=>p.trim().slice(0,1400));
+ const o=(Array.isArray(j.opciones)?j.opciones:[]).filter(str).map(x=>x.trim().slice(0,400));
+ const a=Number(j.correcta);
+ if(ctx.length<2||o.length!==4||new Set(o).size!==4||!(a>=0&&a<=3&&Number.isInteger(a))||!str(j.enunciado)||!str(j.porque))throw {code:"invalid_shape"};
+ if(ctx.join(" ").split(/\s+/).length<110)throw {code:"invalid_shape"};
+ const wo=[0,1,2,3].map(k=>k===a?"":(Array.isArray(j.descartes)&&str(j.descartes[k])?j.descartes[k].trim().slice(0,500):"No es la mejor respuesta: no se apoya en lo que dice la situación."));
+ let cita=null,tabla=null;
+ if(j.cita&&str(j.cita.texto))cita={autor:str(j.cita.autor)?j.cita.autor.trim().slice(0,80):"Un actor del caso",texto:j.cita.texto.trim().slice(0,1200)};
+ if(j.tabla&&Array.isArray(j.tabla.columnas)&&Array.isArray(j.tabla.filas)&&j.tabla.columnas.length&&j.tabla.columnas.length<=6){const n=j.tabla.columnas.length,f=j.tabla.filas.filter(r=>Array.isArray(r)&&r.length===n).slice(0,10);
+  if(f.length)tabla={cols:j.tabla.columnas.map(String),filas:f.map(r=>r.map(String))}}
+ return {tema:str(j.tema)?j.tema.trim().slice(0,80):s.tema,comp:s.comp,tipo:s.tipo,dif:s.dif,ctx,cita,tabla,q:j.enunciado.trim().slice(0,600),o,a,why:j.porque.trim().slice(0,700),wo}}
+async function genQuestion(s,signal){const j=await AI.json(genPrompt(s),{modelTier:"default",cache:false,signal});return prepQ(normQ(j,s),"ia")}
+const canGen=()=>!!(AI&&typeof AI.json==="function"&&Date.now()>aiPause);
+function cancelGen(){if(genCtl)genCtl.abort();genCtl=null;genP=null;S.queued=null;S.loading=false;clearTimeout(slowT)}
+function prefetch(){if(!canGen()||S.queued||genP||!["free","score"].includes(S.st))return;
+ const s=genSpec(),ctl=genCtl=new AbortController();
+ genP=genQuestion(s,ctl.signal).then(q=>{if(!ctl.signal.aborted){S.queued=q;aiFails=0}}).catch(e=>genFail(e)).finally(()=>{
+  if(genCtl!==ctl)return;genCtl=null;genP=null;clearTimeout(slowT);
+  if(S.loading){S.loading=false;if(S.queued){S.fq=withN(S.queued);S.queued=null}else S.fq=fromBank();if(S.st==="free")render();prefetch()}})}
+function genFail(e){const c=e&&e.code;if(c==="cancelled")return;
+ if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(c)){AI=null;setTimeout(aiGone,0);
+  if(!aiWarned){aiWarned=true;helperSay("No pude usar la IA en esta cuenta, así que seguimos con el banco de preguntas de Brújula. ¡Igual vas a practicar mucho!","",7000)}return}
+ if(c==="rate_limited"){aiPause=Date.now()+90000;helperSay("El búho necesita un respiro. Mientras tanto, sigo con preguntas del banco.","",6000);return}
+ if(++aiFails>=2)aiPause=Date.now()+120000}
+function slowTimer(){clearTimeout(slowT);slowT=setTimeout(()=>{if(S.loading&&S.st==="free")render(true)},20000)}
+const viewKey=()=>S.st+":"+(S.st==="free"&&S.fq?"f"+S.fq.n:(S.i||0));
+function countNum(el){if(!el||calm())return;const t=+el.dataset.count,t0=performance.now();
+ (function f(n){const p=Math.min(1,(n-t0)/1100);el.textContent=Math.round(t*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}
+/* Puntaje estimado 0–100, ponderado por dificultad, con margen aproximado */
+function freeStats(){const h=S.fh||[],n=h.length,ok=h.filter(x=>x.acierto).length,w=x=>DIFW[x.dificultad]||1.5;
+ const sw=h.reduce((s,x)=>s+w(x),0),sc=h.reduce((s,x)=>s+(x.acierto?w(x):0),0);
+ const est=n?Math.round(100*sc/sw):0,pa=(ok+2)/(n+4),margin=n?Math.min(50,Math.round(196*Math.sqrt(pa*(1-pa)/n))):0;
+ const li=LEVELS.findIndex(l=>est<=l[0]);let cur=0,best=0;h.forEach(x=>{cur=x.acierto?cur+1:0;best=Math.max(best,cur)});
+ const byComp={};h.forEach(x=>{const c=byComp[x.competencia]=byComp[x.competencia]||{n:0,ok:0};c.n++;if(x.acierto)c.ok++});
+ return {n,ok,est,margin,level:li+1,lname:LEVELS[li][1],ldesc:LEVELS[li][2],streak:cur,best,byComp}}
+const ICO_COMPASS=`<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" style="fill:none;stroke:currentColor;stroke-width:2.5"/><path class="ico-needle" d="M24 9l5 15h-10z" style="fill:var(--gold)"/><path class="ico-needle" d="M24 39l5-15h-10z" style="fill:currentColor"/></svg>`;
+const ICO_INF=`<svg viewBox="0 0 48 48" aria-hidden="true"><path class="ico-inf" d="M14 16c-4.4 0-8 3.6-8 8s3.6 8 8 8c8 0 12-16 20-16 4.4 0 8 3.6 8 8s-3.6 8-8 8c-8 0-12-16-20-16z" style="fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round"/></svg>`;
+const brandBar=right=>`<div class="topbar"><div class="brand"><div class="moon mini">${OWL(true)}</div>Brújula <span>Social</span></div>${right||""}</div>`;
+const tableHTML=t=>`<div class="tbl"><table><thead><tr>${t.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${t.filas.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+
+function mode(){const first=esc((S.name||"").split(" ")[0]);
+return `${brandBar()}<div class="center" style="display:flex;flex-direction:column;gap:8px"><p class="eyebrow">Hola, ${first}</p><h2 class="h-display">¿Cómo quieres practicar hoy?</h2></div>
+<div class="modes">
+<button class="mode-card" data-a="pick" data-i="guided"><span class="mode-ico">${ICO_COMPASS}</span><span class="mode-t">Modo guiado</span><span class="mode-d">Seis casos con su fuente. Primero ubicas la escala, las dimensiones y los actores; luego respondes una pregunta tipo Saber 11.</span><span class="mode-tags"><i>6 casos</i><i>30 puntos</i><i>Con guía</i></span></button>
+<button class="mode-card" data-a="pick" data-i="free"><span class="mode-ico">${ICO_INF}</span><span class="mode-t">Práctica ilimitada</span><span class="mode-d">Preguntas largas tipo ICFES, una tras otra, todas las que quieras. El búho te explica cada respuesta y ves tu puntaje estimado cuando quieras.</span><span class="mode-tags"><i>Sin límite</i><i>Puntaje estimado</i><i>${AI?"✦ Preguntas nuevas con IA":"Banco de preguntas"}</i></span></button>
+</div>`}
+
+function free(){const q=S.fq,ans=S.fpa!=null,st=freeStats();
+if(S.loading||!q){const slow=Date.now()-(S.loadT0||0)>19000;
+ return `${brandBar(`<button class="pill pill-btn" data-a="score">✓ ${st.ok}/${st.n} · Ver puntaje</button>`)}
+<div class="meta"><span>Pregunta ${S.fh.length+1}</span><span>✦ El búho está escribiendo</span></div>
+<div class="card loading-q" aria-busy="true"><p class="eyebrow"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span> Creando una pregunta nueva para ti</p><div class="skel w60"></div><div class="skel"></div><div class="skel"></div><div class="skel w80"></div><div class="skel"></div><div class="skel w40"></div></div>
+<div class="card"><div class="skel w80"></div><div class="skel opt-s"></div><div class="skel opt-s"></div><div class="skel opt-s"></div><div class="skel opt-s"></div></div>
+${slow?`<p class="mute center">Está tardando más de lo normal.</p><button class="btn alt" data-a="usebank">Usar una pregunta del banco mientras tanto</button>`:`<p class="mute center">Las preguntas largas tardan unos segundos en escribirse.</p>`}`}
+let h=`${brandBar(`<button class="pill pill-btn" data-a="score">✓ ${st.ok}/${st.n} · Ver puntaje</button>`)}
+<div class="meta"><span>Pregunta ${q.n}</span><span>${COMP[q.comp]} · ${q.dif==="alta"?"Difícil":"Media"}</span></div>
+<article class="card src"><p class="eyebrow">${esc(q.tipo)} · ${esc(q.tema)}</p>${q.origen==="ia"?`<span class="badge-ai">✦ Pregunta nueva creada con IA</span>`:""}${q.ctx.map(p=>`<p>${esc(p)}</p>`).join("")}${q.cita?`<blockquote>«${esc(q.cita.texto)}»<span class="cite">— ${esc(q.cita.autor)}</span></blockquote>`:""}${q.tabla?tableHTML(q.tabla):""}</article>
+<div class="card"><p class="q-stem">${esc(q.q)}</p>${q.o.map((o,k)=>{let c="";if(ans){c=k===q.a?"good":k===S.fpa?"bad":"";if(fx&&c)c+=" fx"}
+ return `<button class="opt ${c}" data-a="fopt" data-i="${k}" ${ans?"disabled":""}><b>${"ABCD"[k]}</b><span>${esc(o)}</span></button>`}).join("")}${!ans&&AI?hintBtn():""}</div>`;
+if(ans){const r=S.fpa===q.a;h+=say(`<b>${r?"¡Correcto!":"La respuesta es la "+"ABCD"[q.a]+"."}</b> ${esc(q.why)}`,r?"ok":"no",fx)+`<div class="row2"><button class="btn shine" data-a="fnext">Siguiente pregunta</button><button class="btn alt" data-a="score">Ver mi puntaje</button></div>`}
+return h}
+
+function score(){const s=freeStats();
+ if(!s.n)return `${brandBar()}<div class="card center"><h3>Todavía no hay puntaje</h3><p class="mute">Responde al menos una pregunta y vuelve aquí para ver tu estimado.</p></div><button class="btn shine" data-a="back">Volver a las preguntas</button>`;
+ const C=+(2*Math.PI*52).toFixed(2),off=+(C*(1-s.est/100)).toFixed(2);
+ const comps=Object.keys(COMP).map(k=>{const c=s.byComp[k];return c?`<div class="cbar"><span>${COMP[k]}</span><span>${c.ok}/${c.n}</span><div><i style="width:${c.ok/c.n*100}%"></i></div></div>`:""}).join("");
+ return `${brandBar()}<div class="center" style="display:flex;flex-direction:column;gap:6px"><p class="eyebrow">Tu puntaje estimado</p><h2 class="h-display">Con ${s.n} pregunta${s.n>1?"s":""} respondida${s.n>1?"s":""}</h2></div>
+<div class="gauge-wrap"><svg class="gauge" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="g-track"/><circle cx="60" cy="60" r="52" class="g-fill" style="--c:${C};stroke-dasharray:${C};stroke-dashoffset:${off}"/></svg><div class="g-num"><b data-count="${s.est}">${s.est}</b><small>de 100</small></div></div>
+<div class="level lv${s.level}"><b>${s.lname}</b><span>${s.ldesc}</span></div>
+<p class="mute center tnum">${s.ok} de ${s.n} correctas · margen aproximado ± ${s.margin} puntos · racha actual ${s.streak} · mejor racha ${s.best}</p>
+${say((s.n<5?"<b>Ojo:</b> con tan pocas preguntas la estimación cambia mucho. ":"")+"Este número estima tu desempeño en la prueba de Sociales y Ciudadanas del Saber 11. El ICFES real usa muchas más preguntas y otro modelo de calificación.",s.n<5?"no":"")}
+<div class="card"><h3>Por competencia</h3><div class="bars">${comps}</div></div>
+<div class="row2"><button class="btn shine" data-a="back">Seguir practicando</button><button class="btn alt" data-a="switch">Cambiar de modo</button></div>`}
+
+/* ---------- Panel docente ---------- */
+async function rows(){let r=[],src="este dispositivo";try{r=JSON.parse(localStorage.getItem("bs_res")||"[]")}catch(e){}
+ if(DB){try{const q=await DB.collection("respuestas").get();const d=q.docs.filter(x=>x.exists).flatMap(x=>(x.data().intentos||[]));if(d.length||!r.length){r=d;src="la base de datos"}}catch(e){}}
+ return{r,src}}
+async function teacher(){$a.className="";$a.innerHTML=`<p class="mute">Cargando resultados…</p>`;const{r,src}=await rows();TP.rows=r;
+ r.sort((a,b)=>(a.curso+a.nombre).localeCompare(b.curso+b.nombre));
+ $a.className="enter";$a.innerHTML=`<div class="topbar"><div class="brand"><div class="moon mini">${OWL(true)}</div>Panel <span>docente</span></div></div>
+<p class="mute">${r.length} intento(s) · fuente: ${src}</p>
+<div class="card"><div class="tbl"><table><thead><tr><th>Nombre</th><th>Curso</th><th>Modo</th><th class="n">Resultado</th><th class="n">Avance</th><th>Fecha</th></tr></thead><tbody>${r.map((x,k)=>{const lib=x.modo==="libre";return `<tr style="--i:${Math.min(k,15)}"><td>${esc(x.nombre)}</td><td>${esc(x.curso)}</td><td>${lib?"Ilimitada":"Guiado"}</td><td class="n">${lib?`${x.estimado??x.puntaje}/100 · N${x.nivel||"–"}`:`${x.puntaje}/${T.length*5}`}</td><td class="n">${lib?`${(x.preguntas||[]).length} preg.`:`${(x.respuestas||[]).length}/${T.length}${x.completado?" ✔":""}`}</td><td>${new Date(x.fecha).toLocaleDateString("es-CO")}</td></tr>`}).join("")||`<tr><td colspan="6">Todavía no hay respuestas. Aparecerán aquí cuando tus estudiantes respondan.</td></tr>`}</tbody></table></div></div>
+<p class="err" id="csvmsg" hidden></p><button class="btn" data-a="csv" ${r.length?"":"disabled"}>Descargar CSV</button><button class="btn alt" data-a="again">Salir</button>${foot()}`}
+async function csv(){const H=["nombre","curso","fecha","modo","puntaje","completado","preguntas_ilimitada","aciertos_ilimitada","estimado_0_100","nivel","pistas_ilimitada"];T.forEach((_,i)=>H.push(`c${i+1}_escala`,`c${i+1}_dimensiones`,`c${i+1}_actores`,`c${i+1}_pregunta`,`c${i+1}_puntos`,`c${i+1}_pistas`));
+ const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"',L=[H.join(",")];
+ (TP.rows||[]).forEach(x=>{const lib=x.modo==="libre",pq=x.preguntas||[];
+  const c=[x.nombre,x.curso,x.fecha,lib?"ilimitada":"guiado",x.puntaje,x.completado?"si":"no",lib?pq.length:"",lib?pq.filter(p=>p.acierto).length:"",lib?(x.estimado??""):"",lib?(x.nivel??""):"",lib?pq.reduce((s,p)=>s+(p.pistas||0),0):""];
+  T.forEach((_,i)=>{const r=(x.respuestas||[])[i];c.push(...(r?[r.escala,r.dimensiones.join(" + "),r.actores.join(" + "),r.pregunta,r.pe+r.pd+r.pa+r.pp*2,r.pistas||0]:["","","","","",""]))});L.push(c.map(q).join(","))});
+ const data="﻿"+L.join("\n"),filename="resultados-brujula-social.csv",msg=document.getElementById("csvmsg");
+ try{const d=await claude.use("downloads");if(d){await d.save({filename,data});return}}catch(e){if(e&&/declin|cancel|abort/i.test(String(e.code||e.message)))return}
+ if(msg){msg.hidden=false;msg.textContent="La descarga no está disponible en esta vista. Abre la página desde claude.ai para descargar el archivo."}}
+
+/* ---------- Guardado ---------- */
+function save(done){const rec={id:S.id,nombre:S.name,curso:S.course,fecha:new Date().toISOString(),modo:S.mode==="free"?"libre":"guiado",puntaje:S.pts,completado:!!done,respuestas:S.res.slice()};
+ if(S.mode==="free"){const s=freeStats();Object.assign(rec,{puntaje:s.est,estimado:s.est,nivel:s.level,preguntas:S.fh.slice(-200)})}
+ try{const a=JSON.parse(localStorage.getItem("bs_res")||"[]").filter(x=>x.id!==rec.id);a.push(rec);localStorage.setItem("bs_res",JSON.stringify(a))}catch(e){}
+ if(!(DB&&UID))return;
+ saving=saving.then(async()=>{const ref=DB.collection("respuestas").doc(UID);let prev=[];
+  try{const s=await ref.get();if(s.exists)prev=(s.data().intentos||[]).filter(x=>x.id!==rec.id)}catch(e){}
+  prev.push(rec);await ref.set({intentos:prev.slice(-10)});saved="ok"}).catch(()=>{saved="local"}).then(()=>{if(S.st==="end")render(true)})}
+
+/* ---------- Efectos ---------- */
+const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+function burstAt(x,y,n,reach,kind){const b=document.createElement("div");b.className="burst";b.style.left=x+"px";b.style.top=y+"px";
+ for(let k=0;k<n;k++){const i=document.createElement("i"),ang=Math.random()*Math.PI*2,d=reach*(.45+Math.random()*.55);i.className=kind||(k%4===0?"spark":k%3===0?"gold":"");
+  i.style.cssText=`--tx:${Math.cos(ang)*d}px;--ty:${Math.sin(ang)*d-30}px;--tr:${Math.random()*360-180}deg;--t:${.9+Math.random()*.7}s`;b.appendChild(i)}
+ document.body.appendChild(b);setTimeout(()=>b.remove(),1900)}
+function feathers(){land();if(calm())return;const a=document.getElementById("howl");if(!a)return;
+ const r=a.getBoundingClientRect();burstAt(r.left+r.width/2,r.top+r.height/2,14,130)}
+
+/* ---------- Búho ayudante ---------- */
+const H=document.getElementById("helper");let hbT=null,flying=false,tipN=0;
+H.innerHTML=`<div id="hbub" class="h-bubble" role="status" hidden><p></p></div><section id="hpanel" class="h-panel" role="dialog" aria-labelledby="hp-title" hidden></section><button id="howl" class="h-owl moon" aria-label="Búho ayudante: toca para un consejo">${OWL(false,true)}</button>`;
+const TIPS=["La escala depende de dónde ocurre el problema, no de dónde se publicó la noticia.",
+ "Una dimensión es <b>política</b> cuando hay derechos, leyes, Estado o poder en juego.",
+ "Un actor es cualquier persona, grupo o institución con interés en el problema.",
+ "En el ICFES, desconfía de las opciones con palabras absolutas como «solo», «siempre» o «nunca».",
+ "Si dudas entre dos opciones, vuelve a la fuente: la respuesta correcta se apoya en lo que dice el texto.",
+ "Pensamiento sistémico es ver cómo se cruzan varias dimensiones en un mismo problema."];
+function land(){const h=document.getElementById("howl");if(!h)return;h.classList.remove("land");void h.offsetWidth;h.classList.add("land")}
+function helperSay(t,mood="",ms=6500){if(H.hidden)return;const hb=document.getElementById("hbub");
+ hb.className="h-bubble"+(mood?" "+mood:"");hb.querySelector("p").innerHTML=t;hb.hidden=false;void hb.offsetWidth;hb.classList.add("pop");
+ H.dataset.mood=mood==="no"?"worried":"talk";clearTimeout(hbT);hbT=setTimeout(()=>{hb.hidden=true;H.dataset.mood=""},ms)}
+function hideBubble(){clearTimeout(hbT);document.getElementById("hbub").hidden=true;H.dataset.mood=""}
+function greet(){const first=esc((S.name||"").split(" ")[0]);
+ if(S.st==="reg")helperSay("¡Hola! Soy tu búho guía. Escribe tu nombre y elige tu curso para empezar. Si me tocas, te doy un consejo.");
+ else if(S.st==="mode")helperSay(`${first}, elige cómo practicar. En la <b>práctica ilimitada</b> puedes hacer todas las preguntas que quieras y ver tu puntaje cuando quieras.`);
+ else if(S.st==="free"&&S.fq&&S.fpa==null)helperSay(S.fq.n===1&&S.fq.origen==="banco"&&AI?"Esta primera pregunta es del banco; mientras la respondes, ya estoy escribiendo una nueva para ti con IA.":S.fq.n===1?"Lee <b>toda</b> la situación antes de mirar las opciones. En el ICFES la respuesta siempre se apoya en el texto.":`Pregunta ${S.fq.n}. <b>Consejo:</b> ${TIPS[tipN++%TIPS.length]}`);
+ else if(S.st==="score"){const s=freeStats();if(s.n)helperSay(`Vas en <b>${s.lname}</b> con ${s.est} puntos estimados. ${s.level>=3?"¡Muy bien!":"¡Sigue practicando, cada pregunta suma!"}`,s.level>=3?"ok":"")}
+ else if(S.st==="intro")helperSay(`Hola, ${first}. Lee esta guía con calma: la vas a usar en los seis casos.`);
+ else if(S.st==="play"&&S.ph===0)helperSay(`Caso ${S.i+1} de ${T.length}: <b>${T[S.i].t}</b>. Lee la fuente y luego ubica la escala, las dimensiones y los actores.`);
+ else if(S.st==="end"){const p=S.pts/(T.length*5);helperSay(p>=.8?`¡Lo lograste, ${first}! Eres un gran lector de lo social.`:p>=.5?`Buen trabajo, ${first}. Con un poco de práctica llegas lejos.`:`Ánimo, ${first}. Cada caso te enseña algo nuevo.`,p>=.5?"ok":"")}}
+/* Vuelo del búho desde la portada hasta la esquina */
+function flyToCorner(){if(S.st!=="splash"||flying)return;clearTimeout(splashTimer);
+ const src=document.querySelector(".splash .scene .owl"),r0=src&&src.getBoundingClientRect();
+ flying=!!r0&&!calm();S.st="reg";render();
+ const h=document.getElementById("howl");
+ if(!flying)return;
+ h.classList.add("ghost");const r1=h.querySelector(".owl").getBoundingClientRect(),k=r1.width/r0.width;
+ const c=document.createElement("div");c.className="flyer";c.style.width=r0.width+"px";c.innerHTML=OWL(false,true);c.firstElementChild.classList.add("flying");document.body.appendChild(c);
+ const mx=r0.left*.45+r1.left*.55-30,my=Math.max(8,Math.min(r0.top,r1.top)-60);
+ const anim=c.animate([
+  {transform:`translate(${r0.left}px,${r0.top}px) scale(1)`},
+  {transform:`translate(${r0.left}px,${r0.top-40}px) scale(1.06) rotate(-4deg)`,offset:.16},
+  {transform:`translate(${mx}px,${my}px) scale(${(1+k)/2}) rotate(-16deg)`,offset:.52},
+  {transform:`translate(${r1.left}px,${r1.top}px) scale(${k}) rotate(0deg)`}],
+  {duration:1500,easing:"cubic-bezier(.45,.05,.25,1)",fill:"forwards"});
+ const iv=setInterval(()=>{const b=c.getBoundingClientRect();burstAt(b.left+b.width/2,b.top+b.height*.6,2,36)},120);
+ anim.onfinish=()=>{clearInterval(iv);c.remove();h.classList.remove("ghost");flying=false;land();
+  const b=h.getBoundingClientRect();burstAt(b.left+b.width/2,b.top+b.height/2,10,70);setTimeout(greet,250)}}
+/* ---------- Panel del búho: explicaciones, pistas con IA y chat ---------- */
+const P=document.getElementById("hpanel");
+let helpFor=null,helpKind=null,PV=null,aiCtl=null,AI=null,explainN=0;
+const CHAT={};
+const ICON={bad:"✕",miss:"+",good:"✓"};
+const L=k=>"ABCD"[k];
+const md=s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n{2,}/g,"</p><p>").replace(/\n/g,"<br>");
+const plain=h=>String(h).replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+const PERSONA="Eres el búho guía de «Brújula Social», una actividad de Ciencias Sociales de Código U para estudiantes colombianos de grado 10° y 11° que se preparan para la prueba Saber 11 del ICFES. Hablas en español de Colombia, con calidez y claridad, y tuteas al estudiante. Escribe en párrafos cortos, sin títulos ni listas largas; puedes resaltar una o dos ideas con **negritas**.";
+const SUGS=["¿Qué significa la escala de un problema?","Dame un ejemplo de dimensión cultural","¿Cómo descarto opciones en el ICFES?"];
+
+function helpItems(){const x=T[S.i],h=HELP[S.i],it=[];
+ if(helpKind==="free"){const q=S.fq;return [["bad",`Elegiste la <b>${L(S.fpa)}</b>. ${esc(q.wo[S.fpa]||"No es la mejor respuesta según la situación.")}`],["good",`La correcta es la <b>${L(q.a)}</b>. ${esc(q.why)}`]]}
+ if(helpKind==="class"){
+  if(!TP.e)it.push(["bad",`En escala marcaste <b>${S.e}</b>, pero es <b>${x.esc}</b>. ${h.en}`]);
+  S.d.filter(v=>!x.dim.includes(v)).forEach(v=>it.push(["bad",`Marcaste la dimensión <b>${v}</b>. ${h.dn[v]}`]));
+  x.dim.filter(v=>!S.d.includes(v)).forEach(v=>it.push(["miss",`Te faltó la dimensión <b>${v}</b>. ${h.dn[v]}`]));
+  S.ac.filter(v=>!x.ac.includes(v)).forEach(v=>it.push(["bad",`Marcaste a <b>${v}</b> como actor. ${h.an[v]}`]));
+  x.ac.filter(v=>!S.ac.includes(v)).forEach(v=>it.push(["miss",`Te faltó el actor <b>${v}</b>. ${h.an[v]}`]));
+  const ok=[TP.e&&"la escala",TP.d&&"las dimensiones",TP.a&&"los actores"].filter(Boolean);
+  if(ok.length)it.push(["good",`Acertaste ${ok.join(" y ").replace(/ y (?=.* y )/,", ")}. ¡Bien!`])}
+ else it.push(["bad",`Elegiste la <b>${L(S.pa)}</b>. ${h.wo[S.pa]}`],["good",`La correcta es la <b>${L(x.a)}</b>. ${x.why}`]);
+ return it}
+const ctx=(withQ=true)=>{if(S.st==="free"&&S.fq){const q=S.fq;return `PREGUNTA ${q.n} (${q.tipo}; ${COMP[q.comp]}): «${q.tema}»\nSITUACIÓN: ${q.ctx.join(" ")}`+(q.cita?`\nCita de ${q.cita.autor}: «${q.cita.texto}»`:"")+(q.tabla?`\nTabla: ${q.tabla.cols.join(" | ")}; ${q.tabla.filas.map(r=>r.join(" | ")).join("; ")}`:"")+`\nPREGUNTA: ${q.q}\n${q.o.map((o,k)=>L(k)+". "+o).join("\n")}`}const x=T[S.i];return `CASO ${S.i+1}: «${x.t}» (${x.tipo})\nFUENTE: ${plain(x.f)}`+(withQ?`\nPREGUNTA TIPO SABER 11: ${x.q}\n${x.o.map((o,k)=>L(k)+". "+o).join("\n")}`:"")};
+const stage=()=>S.st==="free"?"q":S.ph===0?"c":"q";
+const where=()=>S.st==="free"&&S.fq?`Pregunta ${S.fq.n}`:`Caso ${S.i+1}`;
+const helpHere=()=>!!helpKind&&(S.st==="play"?helpFor===S.i:S.st==="free"&&!!S.fq&&helpFor==="f"+S.fq.n);
+const hintsLeft=()=>S.hints?2-S.hints[stage()]:0;
+const hintBtn=()=>{const l=hintsLeft();return `<button class="btn ai sm" data-a="hint" ${l>0?"":"disabled"}>✦ Pedir una pista al búho ${l>0?`(queda${l>1?"n":""} ${l})`:"(ya usaste tus pistas)"}</button>`};
+const chatKey=()=>S.st==="play"?"c"+S.i:S.st==="free"&&S.fq?"f"+S.fq.n:"general";
+
+function chatLogHTML(){const log=CHAT[chatKey()]||[];
+ const intro=`<div class="msg owl"><p>¡Hola! Pregúntame lo que quieras sobre ${S.st==="play"?"este caso":"Ciencias Sociales y el Saber 11"}. Te ayudo a razonar.</p><p><b>Consejo:</b> ${TIPS[tipN++%TIPS.length]}</p></div>`;
+ return intro+(log.length?log.map(m=>`<div class="msg ${m.role==="user"?"me":"owl"}"><p>${md(m.content)}</p></div>`).join(""):`<div class="sugs">${SUGS.map(s=>`<button class="sug" data-h="sug">${s}</button>`).join("")}</div>`)}
+
+function panelHTML(){let eyebrow="",title="",body="",foot="";
+ const tabs=AI&&helpHere()&&(PV==="help"||PV==="chat");
+ if(PV==="help"){eyebrow=`${where()} · ${helpKind==="class"?"Ubicación":"Pregunta"}`;title=helpKind==="class"?"Revisemos cómo ubicaste el caso":"¿Por qué no era esa opción?";
+  body=helpItems().map((r,k)=>`<div class="hp-item ${r[0]}" style="--i:${k}"><i aria-hidden="true">${ICON[r[0]]}</i><p>${r[1]}</p></div>`).join("")+`<div class="hp-ai" id="aiOut" hidden></div>`;
+  foot=(AI?`<button class="btn ai" data-h="explain">✦ Explícamelo con otras palabras</button>`:"")+`<button class="btn alt" data-h="close">Entendido</button>`}
+ else if(PV==="hint"){eyebrow=`${where()} · Pista`;title="Una pista del búho";
+  body=`<div class="hint-list" id="hintList">${S.hintTexts[stage()].map(t=>`<div class="hp-ai"><p>${md(t)}</p></div>`).join("")}</div>`;
+  foot=hintFoot()}
+ else{eyebrow=S.st==="play"||S.st==="free"?`${where()} · Chat con IA`:"Chat con IA";title="Pregúntale al búho";
+  body=`<div class="chat" id="chatLog">${chatLogHTML()}</div>`;
+  foot=`<form class="ask" id="askForm"><input id="askIn" type="text" maxlength="300" autocomplete="off" placeholder="Escribe tu pregunta…" aria-label="Tu pregunta para el búho"><button class="btn" type="submit">Enviar</button></form>`}
+ return `<header class="hp-head"><div class="moon">${OWL(true)}</div><div><small>${eyebrow}</small><h4 id="hp-title">${title}</h4></div><button class="hp-x" data-h="close" aria-label="Cerrar">×</button></header>
+${tabs?`<nav class="hp-tabs"><button data-h="tab-help" class="${PV==="help"?"on":""}">Explicación</button><button data-h="tab-chat" class="${PV==="chat"?"on":""}">✦ Pregúntale al búho</button></nav>`:""}
+<div class="hp-body" id="hpBody">${body}</div><footer class="hp-foot">${foot}</footer>`}
+const hintFoot=()=>{const l=hintsLeft();return (l>0?`<button class="btn ai" data-h="hint">✦ Otra pista (queda${l>1?"n":""} ${l})</button>`:"")+`<button class="btn alt" data-h="close">Entendido</button>`};
+
+function openPanel(view,pop=true){abortAI();PV=view;hideBubble();P.innerHTML=panelHTML();P.classList.remove("out","pop");P.hidden=false;
+ if(pop){void P.offsetWidth;P.classList.add("pop")}
+ H.dataset.mood=view==="help"?"worried":"";
+ const f=view==="chat"?document.getElementById("askIn"):P.querySelector(".hp-foot .btn");if(f)f.focus({preventScroll:true});
+ if(view==="chat")scrollPanel()}
+function openHelp(kind){helpFor=S.st==="free"?"f"+S.fq.n:S.i;helpKind=kind;explainN=0;openPanel("help")}
+function closePanel(){abortAI();if(P.hidden)return;H.dataset.mood="";if(calm()){P.hidden=true;return}
+ P.classList.remove("pop");P.classList.add("out");setTimeout(()=>{P.hidden=true;P.classList.remove("out")},220)}
+function scrollPanel(){const b=document.getElementById("hpBody");if(b)b.scrollTop=b.scrollHeight}
+
+/* ---------- IA (capacidad sample) ---------- */
+function abortAI(){if(aiCtl){aiCtl.abort();aiCtl=null}}
+function aiErr(e){const c=e&&e.code;
+ if(["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(c)){AI=null;setTimeout(aiGone,0);return "La IA del búho no está disponible en esta cuenta. Igual te sigo ayudando con mis explicaciones."}
+ if(c==="rate_limited")return "El búho está pensando mucho. Intenta de nuevo en un momento.";
+ if(c==="session_expired")return "Tu sesión de Claude expiró. Vuelve a iniciar sesión para usar la IA.";
+ if(c==="refused")return "No puedo responder eso. Pregúntame algo sobre el caso o sobre Sociales.";
+ return "Se cortó la conexión. Toca el botón otra vez para reintentar."}
+function aiGone(){P.querySelectorAll("[data-h=explain],[data-h=hint]").forEach(b=>b.remove());const f=document.getElementById("askForm");if(f)f.remove();
+ if(S.st==="play"||S.st==="free"){const y=scrollY;render(true);scrollTo(0,y)}}
+async function stream(input,el,cache=true){abortAI();const ctl=aiCtl=new AbortController(),ow=document.getElementById("howl");
+ el.hidden=false;el.classList.add("thinking");el.innerHTML='<p><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span> El búho está pensando…</p>';ow.classList.add("thinking");scrollPanel();
+ try{const r=await AI(input,{modelTier:"quick",signal:ctl.signal,cache,onText:({text})=>{el.classList.remove("thinking");el.innerHTML="<p>"+md(text)+'<span class="caret"></span></p>';scrollPanel()}});
+  el.classList.remove("thinking");el.innerHTML="<p>"+md(r.text)+"</p>"+(r.truncated?'<p class="mute">(La respuesta quedó recortada.)</p>':"");scrollPanel();return r.text}
+ catch(e){if(e&&e.code==="cancelled")return null;el.classList.remove("thinking");
+  el.innerHTML=(e&&e.text?"<p>"+md(e.text)+"</p>":"")+`<p class="ai-err">${aiErr(e)}</p>`;scrollPanel();return null}
+ finally{if(aiCtl===ctl)aiCtl=null;ow.classList.remove("thinking")}}
+
+async function runExplain(btn){if(!AI)return;const x=T[S.i];btn.disabled=true;
+ const fq=S.fq,what=helpKind==="free"
+  ?`El estudiante eligió la opción ${L(S.fpa)}. La correcta es la ${L(fq.a)}.\nPor qué su opción es incorrecta: ${fq.wo[S.fpa]}\nPor qué la correcta sí lo es: ${fq.why}`
+  :helpKind==="class"
+  ?`El estudiante debía ubicar el caso. Marcó: escala ${S.e}; dimensiones ${S.d.join(", ")}; actores ${S.ac.join(", ")}.\nLo correcto era: escala ${x.esc}; dimensiones ${x.dim.join(", ")}; actores ${x.ac.join(", ")}.\nExplicación base: ${x.ex}\nNotas de sus errores: ${plain(helpItems().filter(r=>r[0]!=="good").map(r=>r[1]).join(" "))}`
+  :`El estudiante eligió la opción ${L(S.pa)}. La correcta es la ${L(x.a)}.\nPor qué su opción es incorrecta: ${HELP[S.i].wo[S.pa]}\nPor qué la correcta sí lo es: ${x.why}`;
+ const n=++explainN,prompt=`${PERSONA}\n\n${ctx()}\n\n${what}\n\nExplícale con otras palabras${n>1?", de una forma distinta a la anterior,":""} y con un ejemplo de la vida cotidiana en Colombia por qué se equivocó y cómo pensarlo la próxima vez. Sé amable: equivocarse es parte de aprender. Máximo 110 palabras.`;
+ await stream(prompt,document.getElementById("aiOut"),n===1);
+ if(btn.isConnected){btn.disabled=explainN>=3;btn.textContent=explainN>=3?"✦ Ya te lo expliqué de varias formas":"✦ Explícamelo de otra forma"}}
+
+async function runHint(){if(!AI)return;const k=stage();if(hintsLeft()<=0)return;
+ S.hints[k]++;const n=S.hints[k],x=T[S.i],prev=S.hintTexts[k];
+ document.querySelectorAll("#app [data-a=hint]").forEach(b=>b.outerHTML=hintBtn());
+ const foot=P.querySelector(".hp-foot");if(foot&&PV==="hint")foot.innerHTML=hintFoot();
+ const task=k==="c"
+  ?`El estudiante está en el paso 1: debe ubicar el caso según su escala (Local, Nacional o Global), sus dimensiones (Política, Económica, Cultural, Ambiental; puede haber varias) y sus actores (opciones: ${x.ao.join("; ")}). NO digas cuál es la escala correcta ni qué dimensiones o actores son correctos o incorrectos, y no descartes ninguno.`
+  :`El estudiante está en el paso 2: debe responder la pregunta tipo Saber 11. NO digas cuál opción es la correcta, no menciones letras de opciones y no descartes ninguna.`;
+ const prompt=`${PERSONA}\n\n${ctx(k==="q")}\n\n${task}\nDale la pista número ${n} de 2${n>1?", un poco más concreta que la anterior":""}: una pregunta guía o una idea que lo haga releer una parte específica de la fuente. Máximo 55 palabras.`+(prev.length?`\nPistas que ya le diste (no las repitas): ${prev.join(" | ")}`:"");
+ const el=document.createElement("div");el.className="hp-ai";const list=document.getElementById("hintList");if(!list)return;list.appendChild(el);
+ const t=await stream(prompt,el,false);if(t)prev.push(t)}
+
+async function sendChat(q){if(!AI||aiCtl)return;const key=chatKey(),log=CHAT[key]=CHAT[key]||[],x=S.st==="play"?T[S.i]:null;
+ log.push({role:"user",content:q});const box=document.getElementById("chatLog");if(!box)return;
+ const sg=box.querySelector(".sugs");if(sg)sg.remove();
+ box.insertAdjacentHTML("beforeend",`<div class="msg me"><p>${md(q)}</p></div>`);
+ const el=document.createElement("div");el.className="msg owl";box.appendChild(el);
+ const inp=document.getElementById("askIn");if(inp)inp.value="";
+ let rules=PERSONA+"\n\n";
+ if(S.st==="free"&&S.fq){rules+=ctx()+"\n\n"+(S.fpa==null
+  ?"Todavía no ha respondido: NO reveles la letra correcta ni descartes opciones, aunque te lo pida. Ayúdale a razonar con preguntas y ejemplos."
+  :`Ya respondió. La respuesta correcta es la ${L(S.fq.a)}. Puedes explicarla si te lo pide.`)+"\n\n"}
+ if(x){const loc=`La ubicación correcta del caso es: escala ${x.esc}; dimensiones ${x.dim.join(", ")}; actores ${x.ac.join(", ")}.`;
+  rules+=ctx()+"\n\n"+(S.ph===0
+  ?"Todavía no ha ubicado el caso ni respondido la pregunta: NO reveles la escala, las dimensiones ni los actores correctos, ni la letra correcta de la pregunta, aunque te lo pida. Ayúdale a razonar con preguntas y ejemplos."
+  :S.ph===1
+  ?`Ya comprobó la ubicación. ${loc} Puedes explicarla. Todavía NO ha respondido la pregunta tipo Saber 11: no reveles su letra correcta ni descartes opciones, aunque te lo pida; ayúdale a razonar.`
+  :`Ya terminó este caso. ${loc} La respuesta correcta de la pregunta es la ${L(x.a)}. Puedes explicarla si te lo pide.`)+"\n\n"}
+ rules+="Responde solo sobre Ciencias Sociales, este caso y la preparación para el Saber 11; si te preguntan otra cosa, redirige con amabilidad. Máximo 90 palabras por respuesta. Las siguientes son las preguntas del estudiante.";
+ const t=await stream([{role:"user",content:rules},...log.slice(-7)],el,false);
+ if(t)log.push({role:"assistant",content:t})}
+
+H.addEventListener("click",e=>{const h=e.target.closest("[data-h]");
+ if(h){const a=h.dataset.h;
+  if(a==="close"){const was=PV;closePanel();if(was==="help")helperSay("¡Tú puedes! Sigue adelante.","ok",3500);return}
+  if(a==="explain"){runExplain(h);return}
+  if(a==="hint"){runHint();return}
+  if(a==="tab-help"){openPanel("help",false);return}
+  if(a==="tab-chat"){openPanel("chat",false);return}
+  if(a==="sug"){sendChat(h.textContent);return}}
+ if(e.target.closest("#hbub")){hideBubble();return}
+ if(e.target.closest("#howl")){land();
+  if(!P.hidden){closePanel();return}
+  if(helpHere()){openPanel("help");return}
+  if(AI){openPanel("chat");return}
+  helperSay("<b>Consejo:</b> "+TIPS[tipN++%TIPS.length])}});
+H.addEventListener("submit",e=>{e.preventDefault();const i=document.getElementById("askIn"),v=i&&i.value.trim();if(v)sendChat(v)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel()});
+/* El búho termina de armarse: golpe de luna, anillo y ráfaga de plumas y chispas */
+function assembled(){if(S.st!=="splash"||calm())return;const sc=document.querySelector(".splash .scene");if(!sc)return;sc.classList.add("kick");
+ const r=sc.getBoundingClientRect();burstAt(r.left+r.width/2,r.top+r.height*.55,26,r.width*.75)}
+function confetti(){if(calm())return;const c=document.createElement("div");c.className="confetti";const cols=["var(--gold)","var(--owl-gold)","var(--ink)","var(--t-pol)","var(--t-eco)","var(--t-cul)","var(--t-amb)"];
+ for(let k=0;k<70;k++){const i=document.createElement("i");i.style.cssText=`left:${Math.random()*100}%;background:${cols[k%cols.length]};--t:${2.4+Math.random()*1.8}s;--d:${Math.random()*.8}s`;c.appendChild(i)}
+ document.body.appendChild(c);setTimeout(()=>c.remove(),5200)}
+function countUp(){const el=document.querySelector(".score[data-count]");if(!el||calm())return;const tgt=+el.dataset.count,sm=el.querySelector("small").outerHTML,t0=performance.now();
+ (function f(t){const p=Math.min(1,(t-t0)/900);el.innerHTML=Math.round(tgt*(1-Math.pow(1-p,3)))+sm;if(p<1)requestAnimationFrame(f)})(t0)}
+
+/* ---------- Render ---------- */
+let splashTimer=null;
+function render(quiet){const showH=S.st!=="splash"&&S.st!=="teacher"&&H.dataset.ready==="1";H.hidden=!showH;document.body.classList.toggle("has-helper",showH);
+ if(S.st==="teacher"){particles(false);teacher();return}
+ document.body.classList.toggle("cover",S.st==="splash"||S.st==="reg");
+ const key=viewKey();const changed=key!==lastKey;lastKey=key;
+ $a.className=changed&&!quiet?"enter":"";
+ $a.innerHTML=({splash,reg,mode,intro,play,end,free,score}[S.st])()+(S.st==="splash"?"":foot());
+ if(changed&&!quiet){window.scrollTo(0,0);if(!flying&&showH)setTimeout(greet,450)}
+ if(S.st==="end"&&changed){countUp();if(S.pts/(T.length*5)>=.8)confetti()}
+ if(S.pts!=null){if(S.pts>shownPts){const p=$a.querySelector(".pill");if(p&&!calm())p.classList.add("bump")}shownPts=S.pts}
+ particles(["reg","mode","intro","end","score"].includes(S.st));
+ if(S.st==="score"&&changed){countNum($a.querySelector(".g-num b"));if(freeStats().level===4)confetti()}
+ fx=null}
+let shownPts=0;
+
+/* Partículas doradas de fondo (como en Código U) */
+function particles(on){let el=document.getElementById("particles");
+ if(!on||calm()){if(el)el.remove();return}
+ if(el)return;el=document.createElement("div");el.id="particles";el.className="particles";el.setAttribute("aria-hidden","true");
+ for(let k=0;k<22;k++){const i=document.createElement("i");
+  i.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--s:${3+Math.random()*5}px;--t:${7+Math.random()*7}s;--d:${-Math.random()*8}s`;el.appendChild(i)}
+ document.body.prepend(el)}
+/* Chispas sobre las respuestas acertadas */
+function sparkGood(){if(calm())return;document.querySelectorAll("#app .chip.good.fx").forEach((c,k)=>setTimeout(()=>{const r=c.getBoundingClientRect();burstAt(r.left+r.width/2,r.top+r.height/2,6,34,"spark")},k*70))}
+/* Onda al tocar botones */
+document.addEventListener("pointerdown",e=>{const b=e.target.closest(".btn,.sug,.hp-tabs button");if(!b||b.disabled||calm())return;
+ const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2.2,s=document.createElement("span");s.className="ripple";
+ s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),650)});
+
+const A={
+ skip(){flyToCorner();return true},
+ course(v){S.name=document.getElementById("nm").value;S.course=v;S.err=""},
+ start(){const n=document.getElementById("nm").value.trim().replace(/\s+/g," ");S.name=n;
+  if(n.split(" ").length<2||n.length<5){S.err="Escribe tu nombre completo, con nombre y apellido.";return}
+  if(!S.course){S.err="Elige tu curso: 10° u 11°.";return}S.err="";init();S.st="mode"},
+ pick(v){S.mode=v;if(v==="free")startFree();else S.st="intro"},
+ fopt(v){if(S.fpa!=null)return;const q=S.fq;S.fpa=+v;fx=1;const r=S.fpa===q.a;
+  S.fh.push({tema:q.tema,competencia:q.comp,tipo:q.tipo,dificultad:q.dif,eligio:L(S.fpa),correcta:L(q.a),acierto:r,pistas:S.hints.q,origen:q.origen});
+  if(r){setTimeout(feathers,350);setTimeout(()=>helperSay("<b>¡Correcto!</b> Sigue así.","ok",3500),300)}
+  else{const n0=q.n;setTimeout(()=>{if(S.st==="free"&&S.fq.n===n0&&S.fpa!=null){land();openHelp("free")}},450)}
+  save(false)},
+ fnext(){closePanel();helpKind=null;helpFor=null;nextFree()},
+ score(){closePanel();S.st="score"},
+ back(){S.st="free";if(S.loading)return;if(!S.fq||S.fpa!=null)nextFree();else prefetch()},
+ usebank(){S.loading=false;clearTimeout(slowT);S.fq=fromBank()},
+ switch(){closePanel();cancelGen();helpKind=null;helpFor=null;init();S.st="mode"},
+ go(){S.st="play"},
+ e(v){S.e=v;S.lastPick=v},
+ d(v){const k=S.d.indexOf(v);k<0?S.d.push(v):S.d.splice(k,1);S.lastPick=v},
+ ac(v){const k=S.ac.indexOf(v);k<0?S.ac.push(v):S.ac.splice(k,1);S.lastPick=v},
+ check(){const x=T[S.i];TP={e:S.e===x.esc,d:sameSet(S.d,x.dim),a:sameSet(S.ac,x.ac)};S.pts+=TP.e+TP.d+TP.a;S.ph=1;fx=1;S.lastPick=null;setTimeout(sparkGood,120);
+  const n=TP.e+TP.d+TP.a;
+  if(n===3){setTimeout(feathers,350);setTimeout(()=>helperSay("<b>¡Perfecto!</b> Ubicaste muy bien el caso. +3 puntos.","ok"),300)}
+  else{const i0=S.i;setTimeout(()=>{if(S.st==="play"&&S.i===i0&&S.ph===1){land();openHelp("class")}},450)}},
+ opt(v){const x=T[S.i];S.pa=+v;S.ph=2;fx=1;const r=S.pa===x.a;
+  if(r){S.pts+=2;setTimeout(feathers,350);setTimeout(()=>helperSay("<b>¡Correcto!</b> +2 puntos. Vas muy bien.","ok"),300)}
+  else{const i0=S.i;setTimeout(()=>{if(S.st==="play"&&S.i===i0&&S.ph===2){land();openHelp("q")}},450)}
+  S.res.push({escala:S.e,dimensiones:S.d.slice(),actores:S.ac.slice(),pregunta:"ABCD"[S.pa],pe:+TP.e,pd:+TP.d,pa:+TP.a,pp:+r,pistas:S.hints.c+S.hints.q});save(false)},
+ next(){closePanel();helpKind=null;helpFor=null;if(S.i<T.length-1){S.i++;Object.assign(S,{ph:0,e:null,d:[],ac:[],pa:null,hints:{c:0,q:0},hintTexts:{c:[],q:[]}});TP={}}else{S.st="end";save(true)}},
+ again(){closePanel();cancelGen();helpKind=null;helpFor=null;S={st:"reg",name:"",course:"",err:""};saved="local";TP={}},
+ teacher(){if(TEACH)S.st="teacher"},
+ hint(){if(AI){openPanel("hint");runHint()}return true},
+ csv(){csv();return true}
+};
+const quietActs=new Set(["course","e","d","ac","check","opt","fopt"]);
+const navActs=new Set(["start","go","next","again","teacher","pick","fnext","score","back","switch","usebank"]);
+$a.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||b.disabled)return;const act=b.dataset.a;if(!A[act])return;
+ const before=viewKey()+":"+S.ph;
+ if(A[act](b.dataset.i))return;
+ /* Salida suave antes de cambiar de pantalla */
+ if(navActs.has(act)&&before!==viewKey()+":"+S.ph&&!calm()){$a.classList.add("leave");setTimeout(()=>render(),190);return}
+ const keepY=quietActs.has(act)?scrollY:null;render(quietActs.has(act));if(keepY!==null)window.scrollTo(0,keepY)});
+$a.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="nm"){A.start();render()}
+ else if((e.key==="Enter"||e.key===" ")&&e.target.dataset&&e.target.dataset.a==="skip"){e.preventDefault();A.skip()}});
+
+H.dataset.ready="1";
+render();
+setTimeout(assembled,3150);
+splashTimer=setTimeout(flyToCorner,7000);
+</script>

@@ -1,0 +1,13 @@
+{
+  "name": "brujula-social",
+  "private": true,
+  "type": "module",
+  "description": "Brújula Social (Código U): práctica de Sociales tipo Saber 11 con IA de Gemini.",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "dev:mock": "node dev-server.mjs --mock"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
